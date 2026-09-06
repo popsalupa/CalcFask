@@ -1,0 +1,374 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  body {
+    background-color: #0d121a;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #f1f5f9;
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+  }
+  
+  .app-screen {
+    width: 100%;
+    max-width: 390px;
+    background-color: #161f2b;
+    border: 1px solid #28374a;
+    border-radius: 16px;
+    padding: 12px 14px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  }
+  
+  /* Шапка */
+  .top-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 38px;
+    margin-bottom: 6px;
+  }
+  
+  .nav-btn-back {
+    color: #38bdf8;
+    text-decoration: none;
+    font-size: 26px;
+    line-height: 1;
+    padding: 0 4px;
+    cursor: pointer;
+  }
+  
+  .nav-title {
+    color: #38bdf8;
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: -0.2px;
+  }
+  
+  .nav-clean {
+    background: transparent;
+    border: none;
+    color: #38bdf8;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  
+  /* SVG чертёж */
+  .blueprint-wrapper {
+    background: #090e15;
+    border: 1px solid #233142;
+    border-radius: 8px;
+    padding: 6px;
+    margin-bottom: 8px;
+  }
+  
+  .blueprint-svg {
+    width: 100%;
+    height: 155px;
+    display: block;
+  }
+  
+  /* Блок микрофасок и скруглений R1 и R2 */
+  .micro-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 2px;
+  }
+  
+  .micro-cell {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  
+  .chk-line {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .check-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    user-select: none;
+  }
+  
+  .check-label input {
+    display: none;
+  }
+  
+  .custom-box {
+    width: 17px;
+    height: 17px;
+    border: 1.5px solid #48617d;
+    border-radius: 4px;
+    background: #0d1622;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .check-label input:checked + .custom-box {
+    background: #ef4444;
+    border-color: #ef4444;
+  }
+  
+  .check-label input:checked + .custom-box::after {
+    content: "✔";
+    font-size: 11px;
+    color: #ffffff;
+    font-weight: 700;
+  }
+  
+  .mode-switch {
+    display: flex;
+    background: #090e15;
+    border: 1px solid #2c3e53;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  
+  .mode-btn {
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    font-family: monospace;
+    font-size: 11px;
+    padding: 2px 6px;
+    cursor: pointer;
+  }
+  
+  .mode-btn.active {
+    background: #28374a;
+    color: #38bdf8;
+    font-weight: 600;
+  }
+  
+  .micro-val-input {
+    width: 100%;
+    background: #090e15;
+    border: 1px solid #2c3e53;
+    border-radius: 6px;
+    padding: 6px 8px;
+    color: #f1f5f9;
+    font-family: monospace;
+    font-size: 14px;
+    outline: none;
+  }
+  
+  .micro-val-input:focus {
+    border-color: #38bdf8;
+  }
+  
+  /* Красные подсказки */
+  .red-hint {
+    color: #f87171;
+    font-size: 11px;
+    margin-top: 3px;
+    margin-bottom: 8px;
+  }
+  
+  .text-center {
+    text-align: center;
+  }
+  
+  /* Сетка параметров 2x2 */
+  .param-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 12px;
+    row-gap: 8px;
+    margin-bottom: 2px;
+  }
+  
+  .param-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+  }
+  
+  .param-tag {
+    font-size: 13px;
+    color: #cbd5e1;
+    font-family: monospace;
+    min-width: 46px;
+  }
+  
+  .param-input-box {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    background: #090e15;
+    border: 1px solid #2c3e53;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  
+  .param-input-box:focus-within {
+    border-color: #38bdf8;
+  }
+  
+  .param-input-box input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    padding: 7px 8px;
+    color: #f1f5f9;
+    font-family: monospace;
+    font-size: 15px;
+    outline: none;
+  }
+  
+  .btn-calc-sub {
+    background: transparent;
+    border: none;
+    border-left: 1px solid #233142;
+    padding: 0 7px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #94a3b8;
+  }
+  
+  .btn-calc-sub:hover {
+    background: rgba(56, 189, 248, 0.15);
+  }
+  
+  /* Строки одиночных настроек (L, W, БП) */
+  .setting-line {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 7px;
+  }
+  
+  .setting-label {
+    font-size: 12px;
+    color: #cbd5e1;
+  }
+  
+  .setting-input-wrap {
+    width: 120px;
+    background: #090e15;
+    border: 1px solid #2c3e53;
+    border-radius: 6px;
+  }
+  
+  .setting-input-wrap:focus-within {
+    border-color: #38bdf8;
+  }
+  
+  .setting-input-wrap input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    padding: 6px 8px;
+    color: #f1f5f9;
+    font-family: monospace;
+    font-size: 14px;
+    outline: none;
+  }
+  
+  /* Кнопки Point / Program и Calculation */
+  .controls-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    margin-bottom: 8px;
+  }
+  
+  .tab-group {
+    display: flex;
+    background: #090e15;
+    border: 1px solid #2c3e53;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .tab-btn {
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    padding: 8px 14px;
+    font-size: 13px;
+    cursor: pointer;
+  }
+  
+  .tab-btn.active {
+    background: #28374a;
+    color: #38bdf8;
+    font-weight: 600;
+  }
+  
+  .btn-calculate {
+    flex: 1;
+    background: #f43f5e;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(244, 63, 94, 0.3);
+    transition: opacity 0.2s;
+  }
+  
+  .btn-calculate:active {
+    opacity: 0.85;
+  }
+  
+  /* Мета-панель (экспорт / копирование) */
+  .output-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+  
+  .meta-title {
+    font-size: 12px;
+    color: #94a3b8;
+  }
+  
+  .meta-actions {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .action-link {
+    background: transparent;
+    border: none;
+    color: #38bdf8;
+    font-size: 12px;
+    font-family: monospace;
+    cursor: pointer;
+  }
+  
+  /* Окно терминала G-кода */
+  .terminal-box {
+    background: #090e15;
+    border: 1px solid #233142;
+    border-radius: 8px;
+    padding: 10px;
+    min-height: 90px;
+  }
+  
+  pre {
+    margin: 0;
+    font-family: monospace;
+    font-size: 13px;
+    color: #38bdf8;
+    line-height: 1.45;
+    white-space: pre-wrap;
+  }
+  

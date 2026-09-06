@@ -4,13 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CNC Machining & Threading Hub</title>
-  
-  <!-- Шрифты -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  
-  <!-- Стили -->
+  <link rel="preconnect" href="https://googleapis.com">
+  <link rel="preconnect" href="https://gstatic.com" crossorigin>
+  <link href="https://googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -18,40 +14,45 @@
   <header>
     <span class="badge">CNC Machining Suite</span>
     <h1>Калькулятор токарно-фрезерной обработки</h1>
-    <p class="subtitle">Инженерные расчеты геометрии, компенсации радиуса пластины (R), подбор режимов резания и генерация G-кода.</p>
+    <p class="subtitle">Инженерные расчеты геометрии деталей, компенсации инструмента и генерация управляющих программ G-кода.</p>
   </header>
 
   <main class="grid-container">
-    <!-- 01. Передняя фаска -->
-    <div class="calc-card" data-op="front-chamfer">
+    <!-- 01. Передняя фаска (Type 1) -->
+    <a href="frFasc.html" class="calc-card" style="text-decoration: none; color: inherit;">
       <span class="card-badge">№ 01</span>
       <div class="icon-box">
         <svg viewBox="0 0 100 80">
-          <polygon points="10,20 60,20 85,45 85,75 10,75" fill="none" stroke="var(--detail-color)" stroke-width="2.5" />
-          <line x1="10" y1="75" x2="85" y2="75" stroke="#475569" stroke-width="1.5" stroke-dasharray="3,3" />
-          <polygon points="75,25 90,15 90,35" fill="var(--tool-color)" opacity="0.85" />
-          <line x1="90" y1="25" x2="70" y2="45" stroke="#f43f5e" stroke-width="1.8" stroke-dasharray="3,3" />
+          <line x1="10" y1="40" x2="88" y2="40" stroke="#475569" stroke-dasharray="3,2" stroke-width="1" />
+          <polygon points="15,20 62,20 85,38 85,42 62,60 15,60" fill="none" stroke="var(--detail-color)" stroke-width="2.5" />
+          <line x1="85" y1="38" x2="85" y2="42" stroke="var(--detail-color)" stroke-width="2.5" />
+          <circle cx="85" cy="38" r="2.5" fill="var(--tool-color)" />
+          <circle cx="62" cy="20" r="2.5" fill="var(--tool-color)" />
+          <text x="88" y="36" fill="var(--tool-color)" font-size="9" font-family="JetBrains Mono" font-weight="700">A</text>
+          <text x="60" y="14" fill="var(--tool-color)" font-size="9" font-family="JetBrains Mono" font-weight="700">B</text>
         </svg>
       </div>
       <h2 class="card-title">Передняя фаска</h2>
-      <p class="card-desc">Входная фаска детали с расчетом компенсации вершины инструмента по осям X и Z.</p>
+      <p class="card-desc">Type 1: Входная фаска детали, расчет 3 из 4 параметров, радиусные сопряжения и G-код.</p>
       <div class="card-btn">Открыть модуль →</div>
-    </div>
+    </a>
 
-    <!-- 02. Задняя фаска -->
-    <div class="calc-card" data-op="back-chamfer">
+    <!-- 02. Задняя фаска (Type 2) -->
+    <a href="rrFasc.html" class="calc-card" style="text-decoration: none; color: inherit;">
       <span class="card-badge">№ 02</span>
       <div class="icon-box">
         <svg viewBox="0 0 100 80">
-          <polygon points="15,45 40,20 90,20 90,75 15,75" fill="none" stroke="var(--detail-color)" stroke-width="2.5" />
-          <polygon points="35,10 50,25 35,40" fill="var(--tool-color)" opacity="0.85" />
-          <line x1="45" y1="20" x2="20" y2="45" stroke="#f43f5e" stroke-width="1.8" stroke-dasharray="3,3" />
+          <line x1="12" y1="40" x2="90" y2="40" stroke="#475569" stroke-dasharray="3,2" stroke-width="1" />
+          <polygon points="15,38 38,20 85,20 85,60 38,60 15,42" fill="none" stroke="var(--detail-color)" stroke-width="2.5" />
+          <rect x="8" y="10" width="10" height="26" fill="var(--tool-color)" opacity="0.85" rx="1" />
+          <line x1="18" y1="10" x2="18" y2="36" stroke="#f43f5e" stroke-width="1.5" />
+          <text x="24" y="15" fill="#f43f5e" font-size="8" font-family="JetBrains Mono">W</text>
         </svg>
       </div>
       <h2 class="card-title">Задняя фаска</h2>
-      <p class="card-desc">Выходная фаска с обратным конусом и переходом на буртик или канавку подрезки.</p>
+      <p class="card-desc">Type 2: Выходная фаска под отрезку, расчет l2, учет толщины резца W и цикл G-кода.</p>
       <div class="card-btn">Открыть модуль →</div>
-    </div>
+    </a>
 
     <!-- 03. Радиусы (G2/G3) -->
     <div class="calc-card" data-op="fillet-radius">
@@ -64,7 +65,7 @@
         </svg>
       </div>
       <h2 class="card-title">Радиусы (G2 / G3)</h2>
-      <p class="card-desc">Круговая интерполяция, плавные сопряжения углов и галтелей с учетом радиуса пластины.</p>
+      <p class="card-desc">Круговая интерполяция, сопряжения внешних и внутренних углов с учетом пластины.</p>
       <div class="card-btn">Открыть модуль →</div>
     </div>
 
@@ -112,7 +113,6 @@
       <p class="card-desc">Расчет ширины пластины, выступов, радиусных переходов на дне и цикловой обработки.</p>
       <div class="card-btn">Открыть модуль →</div>
     </div>
-
     <!-- 07. Фрезерование -->
     <div class="calc-card" data-op="milling-ops">
       <span class="card-badge">№ 07</span>
@@ -223,7 +223,6 @@
     </div>
   </main>
 
-  <!-- Модальное окно просмотра / перехода к калькуляторам -->
   <div id="modal" class="modal">
     <div class="modal-content">
       <h2 id="modal-title">Модуль</h2>
