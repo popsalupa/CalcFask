@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Type 1</title>
+  <link rel="stylesheet" href="frFasc.css">
+</head>
+<body>
+
+  <div class="app-screen">
+    <header class="top-nav">
+      <a href="index.html" class="nav-btn-back">‹</a>
+      <span class="nav-title">Type 1</span>
+      <button id="btn-clean" class="nav-clean">Clean</button>
+    </header>
+
+    <div class="blueprint-wrapper">
+      <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2">
+        <circle cx="11" cy="11" r="7"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+      <svg viewBox="0 0 340 170" class="blueprint-svg">
+        <line x1="220" y1="85" x2="265" y2="85" stroke="#64748b" stroke-width="1.2" />
+        <polygon points="265,82 271,85 265,88" fill="#64748b" />
+        <line x1="220" y1="85" x2="220" y2="20" stroke="#64748b" stroke-width="1.2" />
+        <polygon points="217,20 220,14 223,20" fill="#64748b" />
+        <text x="274" y="88" fill="#94a3b8" font-size="10" font-family="monospace">Z</text>
+        <text x="216" y="12" fill="#94a3b8" font-size="10" font-family="monospace">X</text>
+        <text x="212" y="94" fill="#94a3b8" font-size="10">O</text>
+
+        <line x1="60" y1="85" x2="235" y2="85" stroke="#94a3b8" stroke-dasharray="7,3,2,3" stroke-width="1" />
+
+        <g id="contour-simple">
+          <polygon points="90,26 145,26 220,60 220,110 145,144 90,144" fill="none" stroke="#38bdf8" stroke-width="2" />
+          <text x="143" y="20" fill="#f59e0b" font-weight="700" font-size="11">B</text>
+          <text x="226" y="58" fill="#f59e0b" font-weight="700" font-size="11">A</text>
+        </g>
+
+        <g id="contour-micro" style="display: none;">
+          <path d="M 90,26 L 138,26 Q 146,26 150,30 L 210,57 Q 220,62 220,70 L 220,100 Q 220,108 210,113 L 150,140 Q 146,144 138,144 L 90,144" fill="none" stroke="#38bdf8" stroke-width="2" />
+          <text x="135" y="20" fill="#f59e0b" font-weight="700" font-size="11">D</text>
+          <text x="153" y="25" fill="#f59e0b" font-weight="700" font-size="11">C</text>
+          <text x="212" y="51" fill="#f59e0b" font-weight="700" font-size="11">B</text>
+          <text x="226" y="72" fill="#f59e0b" font-weight="700" font-size="11">A</text>
+          <g id="lbl-r1-svg" style="display: none;">
+            <path d="M 220,70 Q 225,58 238,52" fill="none" stroke="#ef4444" stroke-width="1" />
+            <text x="240" y="50" fill="#ef4444" font-size="10" font-weight="700" font-family="monospace">R1</text>
+          </g>
+          <g id="lbl-r2-svg" style="display: none;">
+            <path d="M 148,27 Q 152,14 165,12" fill="none" stroke="#ef4444" stroke-width="1" />
+            <text x="168" y="14" fill="#ef4444" font-size="10" font-weight="700" font-family="monospace">R2</text>
+          </g>
+        </g>
+
+        <line x1="90" y1="26" x2="90" y2="144" stroke="#38bdf8" stroke-width="1.5" />
+        <line x1="220" y1="60" x2="220" y2="110" stroke="#38bdf8" stroke-width="1.5" />
+
+        <line x1="75" y1="26" x2="75" y2="144" stroke="#f43f5e" stroke-width="1" />
+        <line x1="70" y1="26" x2="90" y2="26" stroke="#f43f5e" stroke-width="0.8" />
+        <line x1="70" y1="144" x2="90" y2="144" stroke="#f43f5e" stroke-width="0.8" />
+        <text x="54" y="89" fill="#f43f5e" font-size="10" font-family="monospace">D1</text>
+
+        <line x1="236" y1="60" x2="236" y2="110" stroke="#f43f5e" stroke-width="1" />
+        <line x1="220" y1="60" x2="242" y2="60" stroke="#f43f5e" stroke-width="0.8" />
+        <line x1="220" y1="110" x2="242" y2="110" stroke="#f43f5e" stroke-width="0.8" />
+        <text x="242" y="89" fill="#f43f5e" font-size="10" font-family="monospace">d2</text>
+
+        <line x1="145" y1="156" x2="220" y2="156" stroke="#ec4899" stroke-width="1" />
+        <line x1="145" y1="144" x2="145" y2="161" stroke="#ec4899" stroke-width="0.8" />
+        <line x1="220" y1="110" x2="220" y2="161" stroke="#ec4899" stroke-width="0.8" />
+        <text x="178" y="153" fill="#ec4899" font-size="10" font-family="monospace">L1</text>
+
+        <line x1="220" y1="60" x2="175" y2="60" stroke="#a855f7" stroke-width="1" stroke-dasharray="3,2" />
+        <path d="M 190 60 A 30 30 0 0 1 182 48" fill="none" stroke="#a855f7" stroke-width="1.2" />
+        <text x="162" y="49" fill="#a855f7" font-size="9" font-family="monospace">Angle1</text>
+      </svg>
+    </div>
+
+    <div class="micro-row">
+      <div class="micro-cell">
+        <div class="chk-line">
+          <label class="check-label">
+            <input type="checkbox" id="chk-r1">
+            <span class="custom-box"></span>
+            <span>R1 (торец)</span>
+          </label>
+          <div class="mode-switch" id="switch-r1" style="display: none;">
+            <button type="button" class="mode-btn" id="btn-r1-g1" onclick="toggleMicroMode('r1', 'g1')">G1</button>
+            <button type="button" class="mode-btn active" id="btn-r1-arc" onclick="toggleMicroMode('r1', 'arc')">G2/3</button>
+          </div>
+        </div>
+        <input type="text" inputmode="decimal" id="val-r1" class="micro-val-input" placeholder="0.0" style="display: none;">
+      </div>
+
+      <div class="micro-cell">
+        <div class="chk-line">
+          <label class="check-label">
+            <input type="checkbox" id="chk-r2">
+            <span class="custom-box"></span>
+            <span>R2 (выход)</span>
+          </label>
+          <div class="mode-switch" id="switch-r2" style="display: none;">
+            <button type="button" class="mode-btn" id="btn-r2-g1" onclick="toggleMicroMode('r2', 'g1')">G1</button>
+            <button type="button" class="mode-btn active" id="btn-r2-arc" onclick="toggleMicroMode('r2', 'arc')">G2/3</button>
+          </div>
+        </div>
+        <input type="text" inputmode="decimal" id="val-r2" class="micro-val-input" placeholder="0.0" style="display: none;">
+      </div>
+    </div>
+    <div class="red-hint">Click the red check box to determine if R is required</div>
+
+    <div class="param-grid">
+      <div class="param-item">
+        <span class="param-tag">D1</span>
+        <div class="param-input-box">
+          <input type="text" inputmode="decimal" id="in-d1" placeholder="">
+          <button class="btn-calc-sub" onclick="calculateMissingParam('D1')">🧮</button>
+        </div>
+      </div>
+
+      <div class="param-item">
+        <span class="param-tag">d2</span>
+        <div class="param-input-box">
+          <input type="text" inputmode="decimal" id="in-d2" placeholder="">
+          <button class="btn-calc-sub" onclick="calculateMissingParam('d2')">🧮</button>
+        </div>
+      </div>
+
+      <div class="param-item">
+        <span class="param-tag">Angle 1</span>
+        <div class="param-input-box">
+          <input type="text" inputmode="decimal" id="in-angle" placeholder="">
+          <button class="btn-calc-sub" onclick="calculateMissingParam('angle')">🧮</button>
+        </div>
+      </div>
+
+      <div class="param-item">
+        <span class="param-tag">L1</span>
+        <div class="param-input-box">
+          <input type="text" inputmode="decimal" id="in-l1" placeholder="">
+          <button class="btn-calc-sub" onclick="calculateMissingParam('L1')">🧮</button>
+        </div>
+      </div>
+    </div>
+    <div class="red-hint text-center">Need 3 dimension parameters (Totally 4)</div>
+
+    <div class="setting-line">
+      <span class="setting-label">Start point at Z axies</span>
+      <div class="setting-input-wrap">
+        <input type="text" inputmode="decimal" id="in-start-z" value="0">
+      </div>
+    </div>
+
+    <div class="setting-line">
+      <span class="setting-label">Tool nose radius</span>
+      <div class="setting-input-wrap">
+        <input type="text" inputmode="decimal" id="in-radius-r" placeholder="">
+      </div>
+    </div>
+
+    <div class="controls-row">
+      <div class="tab-group">
+        <button id="tab-point" class="tab-btn" onclick="setViewMode('point')">Point</button>
+        <button id="tab-program" class="tab-btn active" onclick="setViewMode('program')">Program</button>
+      </div>
+      <button id="btn-calculation" class="btn-calculate" onclick="performCalculation()">Calculation</button>
+    </div>
+
+    <div class="output-meta">
+      <div class="radio-wrap">
+        <label class="radio-lbl">
+          <input type="radio" name="coord-type" value="abs" id="radio-abs" checked onchange="performCalculation()">
+          <span class="radio-circle"></span>
+          <span>Absolute</span>
+        </label>
+        <label class="radio-lbl">
+          <input type="radio" name="coord-type" value="rel" id="radio-rel" onchange="performCalculation()">
+          <span class="radio-circle"></span>
+          <span>Relative</span>
+        </label>
+      </div>
+      <div class="meta-actions">
+        <button class="action-link" onclick="exportFile()">⎘ export</button>
+        <button class="action-link" onclick="copyProgram()">📋 copy</button>
+      </div>
+    </div>
+
+    <div class="terminal-box">
+      <pre id="output-box"><code></code></pre>
+    </div>
+  </div>
+
+  <script src="frFasc.js"></script>
+</body>
+</html>
