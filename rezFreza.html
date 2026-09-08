@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23141c28'/><polygon points='16,4 28,16 16,28 4,16' fill='%23f59e0b' stroke='%2338bdf8' stroke-width='1.8'/><circle cx='16' cy='16' r='4.5' fill='%230b0f17' stroke='%2338bdf8' stroke-width='1.5'/><circle cx='25' cy='16' r='1.2' fill='%23f43f5e'/></svg>">
+  <title>Резьбофреза</title>
+  <link rel="stylesheet" href="rezFreza.css">
+</head>
+<body>
+  <div class="app-screen">
+    <header class="top-nav">
+      <a href="index.html" class="nav-btn-back">‹</a>
+      <span class="nav-title">Резьбофреза Swiss PRO</span>
+      <button id="btn-clean" class="nav-clean">Clean</button>
+    </header>
+
+    <!-- Схема детали и инструмента с размерными линиями -->
+    <div class="blueprint-wrapper">
+      <svg viewBox="0 0 340 175" class="blueprint-svg-pro">
+        <defs>
+          <marker id="arr" viewBox="0 0 6 6" refX="3" refY="3" markerWidth="4" markerHeight="4" orient="auto-start-reverse">
+            <path d="M0,1 L5,3 L0,5 z" fill="#38bdf8" />
+          </marker>
+          <marker id="arr-amb" viewBox="0 0 6 6" refX="3" refY="3" markerWidth="4" markerHeight="4" orient="auto-start-reverse">
+            <path d="M0,1 L5,3 L0,5 z" fill="#fbbf24" />
+          </marker>
+        </defs>
+
+        <!-- Стенки детали / отверстие -->
+        <path d="M 25 15 L 70 15 L 70 145 L 25 145 Z" fill="#131d2b" stroke="#334155" stroke-width="1.2" />
+        <path d="M 235 15 L 280 15 L 280 145 L 235 145 Z" fill="#131d2b" stroke="#334155" stroke-width="1.2" />
+
+        <!-- Профиль резьбы на стенках отверстия -->
+        <path d="M 70 30 L 65 35 L 70 40 L 65 45 L 70 50 L 65 55 L 70 60 L 65 65 L 70 70 L 65 75 L 70 80 L 65 85 L 70 90 L 65 95 L 70 100 L 65 105 L 70 110 L 65 115 L 70 120" fill="none" stroke="#64748b" stroke-width="1.2" />
+        <path d="M 235 30 L 240 35 L 235 40 L 240 45 L 235 50 L 240 55 L 235 60 L 240 65 L 235 70 L 240 75 L 235 80 L 240 85 L 235 90 L 240 95 L 235 100 L 240 105 L 235 110 L 240 115 L 235 120" fill="none" stroke="#64748b" stroke-width="1.2" />
+
+        <!-- Осевая линия детали -->
+        <line x1="152" y1="10" x2="152" y2="150" stroke="#38bdf8" stroke-width="0.8" stroke-dasharray="8,3,2,3" opacity="0.6" />
+
+        <!-- Хвостовик и шейка фрезы -->
+        <rect x="156" y="15" width="22" height="60" fill="#1e293b" stroke="#475569" stroke-width="1.2" />
+        <rect x="160" y="75" width="14" height="20" fill="#1e293b" stroke="#475569" stroke-width="1.2" />
+
+        <!-- Режущая часть с зубьями -->
+        <path d="M 160 95 L 148 97 L 152 101 L 148 105 L 152 109 L 148 113 L 152 117 L 148 121 L 160 123 L 174 123 L 186 121 L 182 117 L 186 113 L 182 109 L 186 105 L 182 101 L 186 97 L 174 95 Z" fill="#f43f5e" fill-opacity="0.25" stroke="#f43f5e" stroke-width="1.3" />
+
+        <!-- Размерная линия: D резьбы -->
+        <line x1="64" y1="22" x2="241" y2="22" stroke="#38bdf8" stroke-width="1" marker-start="url(#arr)" marker-end="url(#arr)" />
+        <text x="152" y="18" fill="#38bdf8" font-size="10" font-family="monospace" text-anchor="middle" font-weight="bold">D (резьба)</text>
+
+        <!-- Размерная линия: D отверстия -->
+        <line x1="70" y1="135" x2="235" y2="135" stroke="#94a3b8" stroke-width="1" marker-start="url(#arr)" marker-end="url(#arr)" />
+        <text x="152" y="146" fill="#94a3b8" font-size="9" font-family="monospace" text-anchor="middle">Dотв (сверло)</text>
+
+        <!-- Размерная линия: Dc фрезы -->
+        <line x1="147" y1="110" x2="187" y2="110" stroke="#fbbf24" stroke-width="1" marker-start="url(#arr-amb)" marker-end="url(#arr-amb)" />
+        <text x="167" y="106" fill="#fbbf24" font-size="9" font-family="monospace" text-anchor="middle" font-weight="bold">Dc</text>
+
+        <!-- Размерная линия: L глубина резьбы -->
+        <line x1="18" y1="30" x2="18" y2="120" stroke="#38bdf8" stroke-width="1" marker-start="url(#arr)" marker-end="url(#arr)" />
+        <line x1="15" y1="30" x2="65" y2="30" stroke="#38bdf8" stroke-width="0.7" stroke-dasharray="2,2" opacity="0.6" />
+        <line x1="15" y1="120" x2="65" y2="120" stroke="#38bdf8" stroke-width="0.7" stroke-dasharray="2,2" opacity="0.6" />
+        <text x="12" y="78" fill="#38bdf8" font-size="10" font-family="monospace" text-anchor="middle" transform="rotate(-90 12 78)">L (глубина)</text>
+
+        <!-- Размерная линия: Lcut длина раб. части -->
+        <line x1="202" y1="95" x2="202" y2="123" stroke="#f43f5e" stroke-width="1" marker-start="url(#arr)" marker-end="url(#arr)" />
+        <line x1="186" y1="95" x2="205" y2="95" stroke="#f43f5e" stroke-width="0.7" stroke-dasharray="2,2" opacity="0.6" />
+        <line x1="186" y1="123" x2="205" y2="123" stroke="#f43f5e" stroke-width="0.7" stroke-dasharray="2,2" opacity="0.6" />
+        <text x="216" y="112" fill="#f43f5e" font-size="9" font-family="monospace">Lcut</text>
+
+        <!-- Размерная линия: P шаг резьбы -->
+        <line x1="240" y1="65" x2="258" y2="65" stroke="#38bdf8" stroke-width="0.8" />
+        <line x1="240" y1="75" x2="258" y2="75" stroke="#38bdf8" stroke-width="0.8" />
+        <line x1="255" y1="65" x2="255" y2="75" stroke="#38bdf8" stroke-width="1" marker-start="url(#arr)" marker-end="url(#arr)" />
+        <text x="263" y="73" fill="#38bdf8" font-size="9" font-family="monospace">P (шаг)</text>
+      </svg>
+    </div>
+
+    <!-- Конфигурация станка и обработки -->
+    <div class="config-grid">
+      <div class="cfg-cell">
+        <span class="cfg-lbl">Станок</span>
+        <select id="sel-machine">
+          <option value="lathe_c">Токарный</option>
+          <option value="mill_g03">Фрезерный</option>
+        </select>
+      </div>
+      <div class="cfg-cell">
+        <span class="cfg-lbl">Врез</span>
+        <select id="sel-entry">
+          <option value="radial">Радиальный</option>
+          <option value="arc">Дуговой (90°)</option>
+          <option value="linear">Линейный (45°)</option>
+        </select>
+      </div>
+      <div class="cfg-cell">
+        <span class="cfg-lbl">Тип</span>
+        <select id="sel-thread-type">
+          <option value="internal">Внутренняя</option>
+          <option value="external">Наружная</option>
+        </select>
+      </div>
+      <div class="cfg-cell">
+        <span class="cfg-lbl">Ось X</span>
+        <select id="sel-x-mode">
+          <option value="diam">Диаметр (Ø)</option>
+          <option value="rad">Радиус (R)</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Размеры детали и инструмента -->
+    <div class="section-title">Геометрия (мм)</div>
+    <div class="param-grid">
+      <div class="param-item">
+        <span class="param-tag">D резьбы</span>
+        <div class="param-input-box">
+          <input type="text" inputmode="decimal" id="in-d" placeholder="напр. 6.0">
+        </div>
+      </div>
+      <div class="param-item">
+        <span class="param-tag">P шаг резьбы</span>
+        <div class="param-input-box">
+          <input type="text" inputmode="decimal" id="in-p" placeholder="напр. 1.0">
+        </div>
+      </div>
+
+      <div class="param-item">
+        <div class="tag-row">
+          <span class="param-tag">D отверстия</span>
+          <button type="button" class="btn-mini" id="btn-calc-hole">D - P</button>
+        </div>
+        <div class="param-input-box">
+          <input type="text" inputmode="decimal" id="in-dhole" placeholder="напр. 5.0">
+        </div>
+      </div>
+      <div class="param-item">
+        <span class="param-tag">Dc фрезы</span>
+        <div class="param-input-box">
+          <input type="text" inputmode="decimal" id="in-dc" placeholder="напр. 4.5">
+        </div>
+      </div>
+
+      <div class="param-item">
+        <span class="param-tag">L глубина резьбы</span>
+        <div class="param-input-box">
+          <input type="text" inputmode="decimal" id="in-l" placeholder="напр. 12.0">
+        </div>
+      </div>
+      <div class="param-item">
+        <span class="param-tag">Lcut длина раб. части</span>
+        <div class="param-input-box">
+          <input type="text" inputmode="decimal" id="in-lcut" placeholder="напр. 1.0">
+        </div>
+      </div>
+    </div>
+
+    <!-- Проходы и режимы -->
+    <div class="section-title">Проходы и направление</div>
+    <div class="param-grid">
+      <div class="param-item">
+        <span class="param-tag">Ход по Z</span>
+        <div class="param-input-box">
+          <select id="sel-dir">
+            <option value="bottom_up">На выход (Z+)</option>
+            <option value="top_down">В деталь (Z-)</option>
+          </select>
+        </div>
+      </div>
+      <div class="param-item">
+        <span class="param-tag">Z безоп. расстояние</span>
+        <div class="param-input-box">
+          <input type="text" inputmode="decimal" id="in-zsafe" value="0.5">
+        </div>
+      </div>
+
+      <div class="param-item">
+        <span class="param-tag">Черновые проходы</span>
+        <div class="param-input-box">
+          <input type="number" id="in-rough" value="2" min="1" max="10">
+        </div>
+      </div>
+      <div class="param-item">
+        <span class="param-tag">Чистовые проходы</span>
+        <div class="param-input-box">
+          <input type="number" id="in-finish" value="1" min="1" max="5">
+        </div>
+      </div>
+
+      <!-- Опциональные F и S -->
+      <div class="param-item">
+        <span class="param-tag">Подача Fрез</span>
+        <div class="param-input-box opt-box">
+          <input type="text" inputmode="decimal" id="in-f" placeholder="опция">
+        </div>
+      </div>
+      <div class="param-item">
+        <span class="param-tag">Обороты S</span>
+        <div class="param-input-box opt-box">
+          <input type="text" inputmode="decimal" id="in-s" placeholder="опция">
+        </div>
+      </div>
+    </div>
+
+    <button class="btn-calculate" id="btn-calc">Рассчитать G-код</button>
+
+    <div class="output-meta">
+      <span class="meta-title">G-код Fanuc</span>
+      <button class="action-link" id="btn-copy">📋 copy</button>
+    </div>
+
+    <div class="terminal-box">
+      <pre id="output-box"><code>G-код появится здесь...</code></pre>
+    </div>
+  </div>
+  <script src="rezFreza.js"></script>
+</body>
+</html>

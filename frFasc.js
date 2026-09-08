@@ -288,3 +288,13 @@ function exportFile() {
   a.download = 'Type1_chamfer.nc';
   a.click();
 }
+// Плавное скрытие прелоадера после загрузки страницы
+window.addEventListener('load', () => {
+  const preloader = document.getElementById('preloader');
+  if (preloader) {
+    // Небольшая задержка 350мс, чтобы глаз успел насладиться анимацией пластины
+    setTimeout(() => {
+      preloader.classList.add('done');
+    }, 350);
+  }
+});

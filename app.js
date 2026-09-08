@@ -92,3 +92,13 @@ modal.addEventListener('click', (e) => {
 window.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') closeModal();
 });
+// Плавное скрытие прелоадера после загрузки страницы
+window.addEventListener('load', () => {
+  const preloader = document.getElementById('preloader');
+  if (preloader) {
+    // Небольшая задержка 350мс, чтобы глаз успел насладиться анимацией пластины
+    setTimeout(() => {
+      preloader.classList.add('done');
+    }, 350);
+  }
+});

@@ -4,12 +4,67 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CNC Machining & Threading Hub</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23141c28'/><polygon points='16,4 28,16 16,28 4,16' fill='%23f59e0b' stroke='%2338bdf8' stroke-width='1.8'/><circle cx='16' cy='16' r='4.5' fill='%230b0f17' stroke='%2338bdf8' stroke-width='1.5'/><circle cx='25' cy='16' r='1.2' fill='%23f43f5e'/></svg>">
   <link rel="preconnect" href="https://googleapis.com">
   <link rel="preconnect" href="https://gstatic.com" crossorigin>
   <link href="https://googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+
+<!-- CNC Preloader -->
+<div id="preloader" class="cnc-preloader">
+  <div class="loader-container">
+    <svg viewBox="0 0 200 120" class="lathe-animation">
+      <!-- Патрон / Шпиндель слева -->
+      <rect x="10" y="32" width="22" height="56" rx="2" fill="#1e293b" stroke="#334155" stroke-width="1.5" />
+      <rect x="32" y="38" width="10" height="44" fill="#334155" />
+
+      <!-- Заготовка (пруток) -->
+      <defs>
+        <!-- Текстура вращения детали -->
+        <pattern id="lathe-spin" width="12" height="40" patternUnits="userSpaceOnUse">
+          <line x1="0" y1="0" x2="0" y2="40" stroke="#475569" stroke-width="2.5" opacity="0.4" />
+          <line x1="6" y1="0" x2="6" y2="40" stroke="#94a3b8" stroke-width="1.5" opacity="0.6" />
+        </pattern>
+      </defs>
+      
+      <!-- Необработанная часть детали -->
+      <rect x="42" y="42" width="55" height="36" rx="1" fill="#334155" stroke="#475569" stroke-width="1.2" />
+      <!-- Проточенная начисто часть -->
+      <rect x="97" y="48" width="60" height="24" rx="1" fill="#1e293b" stroke="#38bdf8" stroke-width="1.2" />
+      
+      <!-- Полосы вращения заготовки -->
+      <g class="rotating-stock">
+        <rect x="43" y="43" width="53" height="34" fill="url(#lathe-spin)" />
+      </g>
+
+      <!-- Державка резца (Toolholder) -->
+      <path d="M 120 78 L 138 96 L 155 96 L 135 78 Z" fill="#1e293b" stroke="#475569" stroke-width="1.5" />
+
+      <!-- Ромбическая пластина (Insert) -->
+      <polygon points="106,60 118,60 126,72 114,72" fill="#fbbf24" stroke="#f59e0b" stroke-width="1.2" />
+      <circle cx="116" cy="66" r="2.2" fill="#0f172a" />
+
+      <!-- Точка резания / свечение -->
+      <circle cx="106" cy="60" r="3" fill="#f43f5e" class="cutting-glow" />
+
+      <!-- Вылетающая спиральная стружка -->
+      <path d="M 106 59 Q 102 50 108 42 T 114 32" fill="none" stroke="#f43f5e" stroke-width="1.8" stroke-linecap="round" class="flying-chip" />
+      <path d="M 106 59 Q 112 48 105 38" fill="none" stroke="#fbbf24" stroke-width="1.4" stroke-linecap="round" class="flying-chip chip-delay" />
+
+      <!-- Искры -->
+      <circle cx="103" cy="54" r="1" fill="#fbbf24" class="spark s1" />
+      <circle cx="108" cy="52" r="0.8" fill="#f43f5e" class="spark s2" />
+      <circle cx="101" cy="48" r="1.2" fill="#facc15" class="spark s3" />
+    </svg>
+
+    <div class="loader-caption">
+      <span class="loader-title">ЧПУ ОБРАБОТКА</span>
+      <span class="loader-sub">Инициализация режимов...</span>
+    </div>
+  </div>
+</div>
 
   <header>
     <span class="badge">CNC Machining Suite</span>
@@ -37,7 +92,7 @@
       <div class="card-btn">Открыть модуль →</div>
     </a>
 
-    <!-- 02. Задняя фаска (Type 2) -->
+        <!-- 02. Задняя фаска (Type 2) -->
     <a href="rrFasc.html" class="calc-card" style="text-decoration: none; color: inherit;">
       <span class="card-badge">№ 02</span>
       <div class="icon-box">
@@ -54,9 +109,25 @@
       <div class="card-btn">Открыть модуль →</div>
     </a>
 
-    <!-- 03. Радиусы (G2/G3) -->
-    <div class="calc-card" data-op="fillet-radius">
+    <!-- 03. Резьбофреза -->
+    <a href="rezFreza.html" class="calc-card" style="text-decoration: none; color: inherit;">
       <span class="card-badge">№ 03</span>
+      <div class="icon-box">
+        <svg viewBox="0 0 100 80">
+          <ellipse cx="50" cy="45" rx="30" ry="14" fill="none" stroke="var(--detail-color)" stroke-width="2" stroke-dasharray="4,2" />
+          <circle cx="50" cy="45" r="14" fill="none" stroke="#475569" stroke-width="1.5" />
+          <circle cx="64" cy="45" r="7" fill="var(--tool-color)" opacity="0.9" />
+          <path d="M 64 38 A 7 7 0 0 1 71 45" stroke="#f43f5e" stroke-width="2" fill="none" />
+        </svg>
+      </div>
+      <h2 class="card-title">Резьбофреза</h2>
+      <p class="card-desc">Винтовая интерполяция, расчет эффективной контурной подачи и радиуса захода.</p>
+      <div class="card-btn">Открыть модуль →</div>
+    </a>
+
+    <!-- 04. Радиусы (G2/G3) -->
+    <div class="calc-card" data-op="fillet-radius">
+      <span class="card-badge">№ 04</span>
       <div class="icon-box">
         <svg viewBox="0 0 100 80">
           <path d="M 15 25 L 55 25 A 20 20 0 0 1 75 45 L 75 75" fill="none" stroke="var(--detail-color)" stroke-width="2.5" />
@@ -69,9 +140,9 @@
       <div class="card-btn">Открыть модуль →</div>
     </div>
 
-    <!-- 04. Токарная резьба -->
+    <!-- 05. Токарная резьба -->
     <div class="calc-card" data-op="lathe-thread">
-      <span class="card-badge">№ 04</span>
+      <span class="card-badge">№ 05</span>
       <div class="icon-box">
         <svg viewBox="0 0 100 80">
           <path d="M 10 35 L 20 20 L 30 35 L 40 20 L 50 35 L 60 20 L 70 35 L 80 20 L 90 35" fill="none" stroke="var(--detail-color)" stroke-width="2.2" />
@@ -81,22 +152,6 @@
       </div>
       <h2 class="card-title">Резьба токарная</h2>
       <p class="card-desc">Метрическая, трапецеидальная, дюймовая. Генерация циклов Fanuc G76, G92 и G32.</p>
-      <div class="card-btn">Открыть модуль →</div>
-    </div>
-
-    <!-- 05. Резьбофрезерование -->
-    <div class="calc-card" data-op="thread-milling">
-      <span class="card-badge">№ 05</span>
-      <div class="icon-box">
-        <svg viewBox="0 0 100 80">
-          <ellipse cx="50" cy="45" rx="30" ry="14" fill="none" stroke="var(--detail-color)" stroke-width="2" stroke-dasharray="4,2" />
-          <circle cx="50" cy="45" r="14" fill="none" stroke="#475569" stroke-width="1.5" />
-          <circle cx="64" cy="45" r="7" fill="var(--tool-color)" opacity="0.9" />
-          <path d="M 64 38 A 7 7 0 0 1 71 45" stroke="#f43f5e" stroke-width="2" fill="none" />
-        </svg>
-      </div>
-      <h2 class="card-title">Резьбофрезерование</h2>
-      <p class="card-desc">Винтовая интерполяция, расчет эффективной контурной подачи и радиуса захода.</p>
       <div class="card-btn">Открыть модуль →</div>
     </div>
 

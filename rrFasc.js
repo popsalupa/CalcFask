@@ -1,5 +1,5 @@
 let currentView = 'program';
-let microModes = { r1: 'g1', r2: 'arc' };
+let microModes = { r1: 'g1', r2: 'g1' };
 
 // Автозамена запятой на точку
 document.querySelectorAll('input[type="text"]').forEach(input => {
@@ -113,7 +113,7 @@ function calcParam(target) {
   }
 }
 
-// Аналитический расчет сопряжений и генерация G-кода
+// Аналитический расчет сопряжений и G-кода
 function performCalculation() {
   let d1 = parseFloat(document.getElementById('in-d1').value);
   let d2 = parseFloat(document.getElementById('in-d2').value);
@@ -145,9 +145,10 @@ function performCalculation() {
 
   const startDia = rawBP !== '' ? parseFloat(rawBP) : (!isNaN(d1) ? d1 : (d2 + 2 * l1 * Math.tan(rad(a))));
   const radA = rad(a);
+  const tanA = Math.tan(radA);
 
   // Пересчет номинальной длины фаски от начального диаметра
-  const lEff = (startDia - d2) / (2 * Math.tan(radA));
+  const lEff = (startDia - d2) / (2 * tanA);
   const zEndNom = L + W;
   const zStartNom = zEndNom - lEff;
 
@@ -167,7 +168,9 @@ function performCalculation() {
 Угол Angle 1: ${a.toFixed(2)}°
 L1 от БП: ${lEff.toFixed(3)} мм
 Z старт: ${zStartNom.toFixed(3)} мм
-Z плоскости отрезки: ${zEndNom.toFixed(3)} мм`;
+Z плоскости отрезки: ${zEndNom.toFixed(3)} мм
+R1: ${r1Active ? r1Val.toFixed(3) + ' (' + microModes.r1 + ')' : 'Откл.'}
+R2: ${r2Active ? r2Val.toFixed(3) + ' (' + microModes.r2 + ')' : 'Откл.'}`;
     return;
   }
 
@@ -177,33 +180,37 @@ Z плоскости отрезки: ${zEndNom.toFixed(3)} мм`;
     lines.push(`G00 X${formatVal(startDia)} Z${formatVal(zStartNom)}`);
     lines.push(`G01 X${formatVal(d2)} Z${formatVal(zEndNom)} F0.05`);
   } else {
-    // 1. Точка входа на безопасном диаметре (R1)
+    // 1. Вход со стороны цилиндра / БП (R1)
     let xApp = startDia;
     let zApp = zStartNom;
     let xConeStart = startDia;
     let zConeStart = zStartNom;
 
     if (r1Active) {
-      if (microModes.r1 === 'arc') {
+      if (microModes.r1 === 'g1') {
+        // Микрофаска 45°: пересечение цилиндра и конуса
+        const C1 = r1Val;
+        const deltaZ1 = C1 / (1 + tanA);
+        zApp = zStartNom - C1;
+        xApp = startDia;
+        zConeStart = zStartNom + deltaZ1;
+        xConeStart = startDia - 2 * deltaZ1 * tanA;
+
+        lines.push(`G00 X${formatVal(xApp)} Z${formatVal(zApp)}`);
+        lines.push(`G01 X${formatVal(xConeStart)} Z${formatVal(zConeStart)} F0.03`);
+      } else {
+        // Скругление дугой
         const halfAngle1 = ((90 - a) / 2 * Math.PI) / 180;
         const T1 = r1Val * Math.tan(halfAngle1);
         zApp = zStartNom - T1;
         xConeStart = startDia - 2 * r1Val * (1 - Math.cos(radA));
         zConeStart = zApp + r1Val * Math.sin(radA);
-      } else {
-        xConeStart = startDia - 2 * r1Val;
-        zConeStart = zStartNom + r1Val;
-      }
-    }
 
-    lines.push(`G00 X${formatVal(xApp)} Z${formatVal(zApp)}`);
-
-    if (r1Active) {
-      if (microModes.r1 === 'arc') {
+        lines.push(`G00 X${formatVal(xApp)} Z${formatVal(zApp)}`);
         lines.push(`G02 X${formatVal(xConeStart)} Z${formatVal(zConeStart)} R${formatVal(r1Val)} F0.03`);
-      } else {
-        lines.push(`G01 X${formatVal(xConeStart)} Z${formatVal(zConeStart)} F0.03`);
       }
+    } else {
+      lines.push(`G00 X${formatVal(startDia)} Z${formatVal(zStartNom)}`);
     }
 
     // 2. Выход на диаметр d2 и плоскость отрезки (R2)
@@ -211,22 +218,24 @@ Z плоскости отрезки: ${zEndNom.toFixed(3)} мм`;
     let zConeEnd = zEndNom;
 
     if (r2Active) {
-      if (microModes.r2 === 'arc') {
-        // Точка касания дуги с образующей конуса
-        xConeEnd = d2 + 2 * r2Val * (1 - Math.sin(radA));
-        zConeEnd = zEndNom - (r2Val * (1 - Math.sin(radA))) / Math.tan(radA);
+      if (microModes.r2 === 'g1') {
+        // Микрофаска 45°: пересечение конуса и плоскости отрезки
+        const C2 = r2Val;
+        const deltaZ2 = C2 / (1 - tanA);
+        zConeEnd = zEndNom - deltaZ2;
+        xConeEnd = d2 + 2 * (zEndNom - zConeEnd) * tanA;
+        const xEndCut = d2 - 2 * C2;
 
-        // Точка выхода дуги на плоскость отрезки
+        lines.push(`G01 X${formatVal(xConeEnd)} Z${formatVal(zConeEnd)} F0.05`);
+        lines.push(`G01 X${formatVal(xEndCut)} Z${formatVal(zEndNom)} F0.03`);
+      } else {
+        // Скругление дугой
+        xConeEnd = d2 + 2 * r2Val * (1 - Math.sin(radA));
+        zConeEnd = zEndNom - (r2Val * (1 - Math.sin(radA))) / tanA;
         const xArcEnd = d2 - 2 * r2Val * (1 - Math.sin(radA));
 
         lines.push(`G01 X${formatVal(xConeEnd)} Z${formatVal(zConeEnd)} F0.05`);
         lines.push(`G03 X${formatVal(xArcEnd)} Z${formatVal(zEndNom)} R${formatVal(r2Val)} F0.03`);
-      } else {
-        xConeEnd = d2 + 2 * r2Val;
-        zConeEnd = zEndNom - r2Val;
-
-        lines.push(`G01 X${formatVal(xConeEnd)} Z${formatVal(zConeEnd)} F0.05`);
-        lines.push(`G01 X${formatVal(d2)} Z${formatVal(zEndNom)} F0.03`);
       }
     } else {
       lines.push(`G01 X${formatVal(d2)} Z${formatVal(zEndNom)} F0.05`);
@@ -262,3 +271,14 @@ function exportFile() {
   a.download = 'Type2_rear_chamfer.nc';
   a.click();
 }
+
+// Плавное скрытие прелоадера после загрузки страницы
+window.addEventListener('load', () => {
+  const preloader = document.getElementById('preloader');
+  if (preloader) {
+    // Небольшая задержка 350мс, чтобы глаз успел насладиться анимацией пластины
+    setTimeout(() => {
+      preloader.classList.add('done');
+    }, 350);
+  }
+});
