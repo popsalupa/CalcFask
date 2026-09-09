@@ -1,4 +1,4 @@
-// Плавное скрытие прелоадера
+// Плавное скрытие прелоадера после загрузки страницы
 window.addEventListener('load', () => {
   const preloader = document.getElementById('preloader');
   if (preloader) {
@@ -8,7 +8,7 @@ window.addEventListener('load', () => {
   }
 });
 
-// Парсер чисел
+// Парсер чисел (поддерживает ввод с запятой и точкой)
 const getNum = (id) => {
   const el = document.getElementById(id);
   if (!el || el.value.trim() === '') return null;
@@ -16,14 +16,14 @@ const getNum = (id) => {
   return isNaN(val) ? null : val;
 };
 
-// Форматирование чисел для Fanuc
+// Форматирование чисел для Fanuc: если число целое — обязательно ставится точка (напр. 0.)
 const fanucNum = (val) => {
   const rounded = Number(val.toFixed(3));
   const str = rounded.toString();
   return str.includes('.') ? str : str + '.';
 };
 
-// Авторасчет отверстия (D - P)
+// Кнопка авторасчета диаметра отверстия (D - P)
 document.getElementById('btn-calc-hole').addEventListener('click', () => {
   const D = getNum('in-d');
   const P = getNum('in-p');
@@ -33,6 +33,7 @@ document.getElementById('btn-calc-hole').addEventListener('click', () => {
   }
 });
 
+// Основной расчет G-кода
 document.getElementById('btn-calc').addEventListener('click', () => {
   const D = getNum('in-d');
   const P = getNum('in-p');
@@ -65,15 +66,20 @@ document.getElementById('btn-calc').addEventListener('click', () => {
   }
 
   if (threadType === 'internal' && Dc >= Dhole) {
-    document.getElementById('output-box').innerText = `Ошибка: Dc фрезы (${Dc}) >= D отверстия (${Dhole})!`;
+    document.getElementById('output-box').innerText = `Ошибка: Диаметр фрезы Dc (${Dc}) >= отверстия (${Dhole})! Затирание инструмента.`;
     return;
   }
 
-  // Припуск на сторону
-  const radialStock = threadType === 'internal' ? (D - Dhole) / 2 : (0.5413 * P);
+  // Расчет радиального припуска на сторону
+  const radialStock = threadType === 'internal' 
+    ? (D - Dhole) / 2 
+    : (0.5413 * P);
+
+  // Чистовой припуск (0.05 мм или 10% от профиля)
   const finishStock = Math.min(0.05, radialStock * 0.15);
   const roughStockTotal = Math.max(0, radialStock - finishStock);
 
+  // Сетка радиальных шагов по X
   const passOffsets = [];
   for (let i = 1; i <= nRough; i++) {
     passOffsets.push(roughStockTotal * (i / nRough));
@@ -86,17 +92,24 @@ document.getElementById('btn-calc').addEventListener('click', () => {
   const fFastParam = feed ? ` F${fanucNum(Math.max(feed * 4, 1000))}` : ' F1000';
   const fSlowApproach = feed ? ` F${fanucNum(Math.min(feed, 100))}` : ' F100';
 
-  // Инкремент W и угол H
-  const zBackOvercut = holeType === 'through' ? P : 0;
-  const totalW = L + zBackOvercut + Zsafe;
-  const isSingleTooth = Lcut <= (P * 1.25);
-  const strokeW = isSingleTooth ? totalW : (P + Zsafe);
-  const totalTurns = strokeW / P;
-  const totalDeg = totalTurns * 360;
+  // Расчет длины хода по Z:
+  // Для сквозного отверстия: длина детали L + безопасный подход Zsafe +
+  // длина режущей гребенки Lcut (чтобы задний зуб вышел наружу) + гарантированный перебег 0.2 мм.
+  // Для глухого: ход ограничен дном детали + безопасный зазор.
+  let rawW = (holeType === 'through')
+    ? (L + Zsafe + Lcut + 0.2)
+    : (L + Zsafe);
+
+  // Приведение хода к целому числу полных витков (кратно шагу P).
+  // Это гарантирует строго целочисленный угол H, кратный 360 градусам (без дробных углов).
+  const turns = Math.ceil(rawW / P);
+  const strokeW = turns * P;
+  const totalDeg = Math.round(turns * 360);
 
   let gcode = `(=========================================)\n`;
   gcode += `(РЕЗЬБОФРЕЗЕРОВАНИЕ: D${fanucNum(D)} ШАГ ${fanucNum(P)} ГЛУБИНА ${fanucNum(L)})\n`;
-  gcode += `(ОТВЕРСТИЕ: ${holeType === 'through' ? 'СКВОЗНОЕ' : 'ГЛУХОЕ'} | СТАРТ Z${fanucNum(Zsafe)})\n`;
+  gcode += `(ОТВЕРСТИЕ: ${holeType === 'through' ? 'СКВОЗНОЕ' : 'ГЛУХОЕ'} | ХОД: ${strokeW.toFixed(2)} ММ (${turns} ВИТКОВ))\n`;
+  gcode += `(ИНСТРУМЕНТ: Dc${fanucNum(Dc)} Lcut${fanucNum(Lcut)} | ОСЬ X: ${xMode === 'diam' ? 'ДИАМЕТР' : 'РАДИУС'})\n`;
   gcode += `(=========================================)\n`;
 
   // -------------------------------------------------------------------------
@@ -123,24 +136,20 @@ document.getElementById('btn-calc').addEventListener('click', () => {
       gcode += `\n(--- ПРОХОД ${idx + 1}/${passOffsets.length}: СЪЕМ=${radialCut.toFixed(3)} ММ ${isFinish ? '[ЧИСТОВОЙ]' : '[ЧЕРНОВОЙ]'} ---)\n`;
 
       if (dir === 'bottom_up') {
-        // НА ВЫХОД: Сначала заход на дно через W-, врез, выход W+
-        if (idx > 0) {
-          gcode += `G00 C0. (СБРОС ОСИ C В ВОЗДУХЕ)\n`;
-        }
+        // НА ВЫХОД (Z+): погружение на дно через W-, врезание по X, резание на выход W+
+        if (idx > 0) gcode += `G00 C0. (СБРОС ОСИ C В ВОЗДУХЕ)\n`;
         gcode += `G01 W-${fanucNum(strokeW)}${fFastParam} (ЗАХОД НА ДНО ПО ЦЕНТРУ X0)\n`;
         gcode += `G01 X${fanucNum(targetX)}${fParam} (ВРЕЗАНИЕ В СТЕНКУ ПО X)\n`;
-        gcode += `G01 H${fanucNum(totalDeg)} W${fanucNum(strokeW)}${fParam} (РЕЗАНИЕ НА ВЫХОД В ВОЗДУХ ДО Z${fanucNum(Zsafe)})\n`;
+        gcode += `G01 H${totalDeg}. W${fanucNum(strokeW)}${fParam} (РЕЗАНИЕ НА ВЫХОД ДО Z${fanucNum(Zsafe)})\n`;
         gcode += `G01 X0.${fFastParam} (ОТВОД В ЦЕНТР СНАРУЖИ ДЕТАЛИ)\n`;
 
       } else {
-        // В ДЕТАЛЬ: Врез в воздухе на Zsafe, резание W-, отвод на дне X0, возврат W+
-        if (idx > 0) {
-          gcode += `G00 C0. (СБРОС ОСИ C В ВОЗДУХЕ)\n`;
-        }
-        gcode += `G01 X${fanucNum(targetX)}${fParam} (СМЕЩЕНИЕ ПО X В ВОЗДУХЕ)\n`;
-        gcode += `G01 H${fanucNum(totalDeg)} W-${fanucNum(strokeW)}${fParam} (РЕЗАНИЕ В ДЕТАЛЬ С ТОРЦА)\n`;
-        gcode += `G01 X0.${fFastParam} (ОТВОД В ЦЕНТР НА ДНЕ)\n`;
-        gcode += `G01 W${fanucNum(strokeW)}${fFastParam} (ВОЗВРАТ ПО ЦЕНТРУ НА ВЫХОД Z${fanucNum(Zsafe)})\n`;
+        // В ДЕТАЛЬ (Z-): смещение по X в воздухе, сквозное резание W-, отвод в центр, возврат W+
+        if (idx > 0) gcode += `G00 C0. (СБРОС ОСИ C В ВОЗДУХЕ)\n`;
+        gcode += `G01 X${fanucNum(targetX)}${fParam} (СМЕЩЕНИЕ ПО X В ВОЗДУХЕ НА Z${fanucNum(Zsafe)})\n`;
+        gcode += `G01 H${totalDeg}. W-${fanucNum(strokeW)}${fParam} (СКВОЗНОЕ РЕЗАНИЕ В ДЕТАЛЬ)\n`;
+        gcode += `G01 X0.${fFastParam} (ОТВОД В ЦЕНТР ПОСЛЕ ВЫХОДА ИЗ ДЕТАЛИ)\n`;
+        gcode += `G01 W${fanucNum(strokeW)}${fFastParam} (ВОЗВРАТ ПО ЦЕНТРУ НА СТАРТ Z${fanucNum(Zsafe)})\n`;
       }
     });
 
@@ -156,13 +165,14 @@ document.getElementById('btn-calc').addEventListener('click', () => {
     if (feed) {
       const fCenter = Math.round(feed * ((D - Dc) / D));
       fCenterStr = ` F${fanucNum(fCenter)}`;
+      gcode += `(ПОДАЧА ЦЕНТРА ФРЕЗЫ: F${fanucNum(fCenter)} ММ/МИН | НА КРОМКЕ: F${fanucNum(feed)})\n`;
     }
 
     gcode += `G90 G17 G40\n`;
     if (rpm) gcode += `M03 S${fanucNum(rpm)}\n`;
     gcode += `G00 X0. Y0.\n`;
 
-    const zStart = dir === 'bottom_up' ? -(L + zBackOvercut) : Zsafe;
+    const zStart = dir === 'bottom_up' ? -strokeW : Zsafe;
     const zSign = dir === 'bottom_up' ? 1 : -1;
 
     passOffsets.forEach((radialCut, idx) => {
@@ -184,7 +194,7 @@ document.getElementById('btn-calc').addEventListener('click', () => {
       }
     });
 
-    gcode += `\nG00 Z${fanucNum(Zsafe + 5.0)}\n`;
+    gcode += `\nG00 Z${fanucNum(Zsafe + 5.0)} (ОТХОД НА БЕЗОПАСНУЮ ВЫСОТУ)\n`;
     if (rpm) gcode += `M05\n`;
   }
 
@@ -202,7 +212,7 @@ document.getElementById('btn-clean').addEventListener('click', () => {
   document.getElementById('output-box').innerText = 'G-код появится здесь...';
 });
 
-// Кнопка копирования
+// Кнопка копирования в буфер обмена
 document.getElementById('btn-copy').addEventListener('click', () => {
   const text = document.getElementById('output-box').innerText;
   if (!text || text.includes('G-код появится здесь')) return;
