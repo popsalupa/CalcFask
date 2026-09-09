@@ -1,0 +1,459 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    background-color: #0b0f17;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #f1f5f9;
+    display: flex;
+    justify-content: center;
+    padding: 8px;
+  }
+  
+  /* Базовый мобильный контейнер */
+  .app-screen {
+    width: 100%;
+    max-width: 440px;
+    background-color: #141c28;
+    border: 1px solid #243245;
+    border-radius: 14px;
+    padding: 12px 14px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    transition: max-width 0.25s ease;
+  }
+  
+  /* -------------------------------------------------------------------------- */
+  /* АДАПТИВНОСТЬ ДЛЯ ПК И ПЛАНШЕТОВ (Увеличенный чертеж и комфортная сетка)     */
+  /* -------------------------------------------------------------------------- */
+  @media (min-width: 768px) {
+    body {
+      padding: 24px 16px;
+    }
+  
+    .app-screen {
+      max-width: 640px;
+      padding: 18px 22px;
+      border-radius: 18px;
+    }
+  
+    .nav-title {
+      font-size: 17px !important;
+    }
+  
+    .blueprint-wrapper {
+      min-height: 225px !important;
+      padding: 14px !important;
+      margin-bottom: 14px !important;
+    }
+  
+    .blueprint-svg {
+      max-height: 210px !important;
+    }
+  
+    .param-grid {
+      gap: 12px !important;
+      margin-bottom: 14px !important;
+    }
+  
+    .param-item {
+      padding: 8px 12px !important;
+    }
+  
+    .param-tag {
+      font-size: 11.5px !important;
+    }
+  
+    .param-input-box input {
+      font-size: 15.5px !important;
+    }
+  
+    .btn-calculate {
+      padding: 12px !important;
+      font-size: 15px !important;
+      margin-bottom: 14px !important;
+    }
+  
+    .terminal-box {
+      min-height: 120px !important;
+      padding: 12px 14px !important;
+    }
+  
+    .terminal-box pre {
+      font-size: 12.5px !important;
+      line-height: 1.5 !important;
+    }
+  }
+  
+  .top-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 32px;
+    margin-bottom: 8px;
+  }
+  
+  .nav-btn-back {
+    color: #38bdf8;
+    text-decoration: none;
+    font-size: 24px;
+    padding: 0 4px;
+  }
+  
+  .nav-title {
+    color: #38bdf8;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.2px;
+  }
+  
+  .nav-clean {
+    background: transparent;
+    border: none;
+    color: #38bdf8;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  
+  /* Окно чертежа */
+  .blueprint-wrapper {
+    background: #080d14;
+    border: 1px solid #1e2c3f;
+    border-radius: 10px;
+    padding: 8px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 165px;
+  }
+  
+  .blueprint-svg {
+    width: 100%;
+    max-height: 160px;
+    transition: all 0.25s ease;
+  }
+  
+  /* Верхний блок опции кромки B */
+  .edge-top-container {
+    margin-bottom: 10px;
+    padding: 0 2px;
+  }
+  
+  .edge-top-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 34px;
+  }
+  
+  .edge-fields {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    animation: fadeIn 0.2s ease;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-2px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .hint-red {
+    font-size: 10.5px;
+    color: #f87171;
+    margin-top: 3px;
+    line-height: 1.2;
+  }
+  
+  /* Свитч G1 / G2/3 */
+  .edge-switch {
+    display: inline-flex;
+    background: #080d14;
+    border: 1px solid #243245;
+    border-radius: 6px;
+    padding: 2px;
+    gap: 2px;
+  }
+  
+  .switch-btn {
+    background: transparent;
+    border: 1px solid transparent;
+    color: #64748b;
+    font-family: monospace;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    line-height: 1.2;
+  }
+  
+  .switch-btn:hover {
+    color: #94a3b8;
+  }
+  
+  .switch-btn.active {
+    background: #141c28;
+    color: #38bdf8;
+    border-color: #38bdf8;
+    box-shadow: 0 0 6px rgba(56, 189, 248, 0.25);
+  }
+  
+  .edge-input-box {
+    width: 65px;
+    background: #0d1522;
+    border: 1px solid #243245;
+    border-radius: 6px;
+    padding: 3px 6px;
+  }
+  
+  .edge-input-box input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: #f8fafc;
+    font-size: 13px;
+    font-family: monospace;
+    font-weight: 700;
+    outline: none;
+    text-align: center;
+  }
+  
+  /* Сетка параметров 2x2 */
+  .param-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  
+  .param-item {
+    background: #0d1522;
+    border: 1px solid #1e293b;
+    border-radius: 8px;
+    padding: 6px 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    transition: border-color 0.2s ease;
+  }
+  
+  .param-item:focus-within {
+    border-color: #38bdf8;
+  }
+  
+  .param-tag {
+    font-size: 10.5px;
+    font-family: monospace;
+    color: #94a3b8;
+    font-weight: 600;
+  }
+  
+  .param-input-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .param-input-box input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: #f8fafc;
+    font-size: 14px;
+    font-family: monospace;
+    font-weight: 600;
+    outline: none;
+  }
+  
+  .param-input-box input::placeholder {
+    color: #475569;
+    font-weight: 400;
+    font-size: 12.5px;
+  }
+  
+  .btn-calc-mini {
+    background: transparent;
+    border: none;
+    color: #38bdf8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.15s ease;
+  }
+  
+  .btn-calc-mini:hover {
+    background: rgba(56, 189, 248, 0.15);
+    color: #7dd3fc;
+  }
+  
+  .ico-calc {
+    width: 15px;
+    height: 15px;
+  }
+  
+  .check-inline {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    font-size: 11px;
+    color: #cbd5e1;
+  }
+  
+  .check-inline input[type="checkbox"] {
+    accent-color: #f43f5e;
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+  }
+  
+  /* Переключатель режимов Program / Point */
+  .mode-toggle {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background: #080d14;
+    border: 1px solid #1e2c3f;
+    border-radius: 8px;
+    padding: 2px;
+    margin-bottom: 10px;
+  }
+  
+  .mode-btn {
+    background: transparent;
+    border: none;
+    color: #64748b;
+    font-size: 12.5px;
+    font-weight: 600;
+    padding: 6px 0;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .mode-btn.active {
+    background: #1e293b;
+    color: #38bdf8;
+    border: 1px solid #38bdf8;
+  }
+  
+  /* Кнопка расчета */
+  .btn-calculate {
+    width: 100%;
+    background: #f43f5e;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-bottom: 10px;
+    transition: background 0.2s ease;
+  }
+  
+  .btn-calculate:hover {
+    background: #e11d48;
+  }
+  
+  /* Вывод результатов */
+  .output-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+  }
+  
+  .meta-title {
+    font-size: 11px;
+    font-family: monospace;
+    color: #94a3b8;
+  }
+  
+  .action-link {
+    background: transparent;
+    border: none;
+    color: #38bdf8;
+    font-size: 11.5px;
+    cursor: pointer;
+  }
+  
+  .terminal-box {
+    background: #080d14;
+    border: 1px solid #1e2c3f;
+    border-radius: 8px;
+    padding: 8px 10px;
+    min-height: 80px;
+  }
+  
+  .terminal-box pre {
+    font-family: "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 11.5px;
+    color: #38bdf8;
+    white-space: pre-wrap;
+    line-height: 1.45;
+  }
+
+  /* Адаптивность для ПК и планшетов во всех калькуляторах */
+@media (min-width: 768px) {
+    body {
+      padding: 24px 16px;
+    }
+  
+    .app-screen {
+      max-width: 640px !important;
+      padding: 18px 22px !important;
+      border-radius: 18px !important;
+    }
+  
+    .blueprint-wrapper {
+      min-height: 225px !important;
+      padding: 14px !important;
+      margin-bottom: 14px !important;
+    }
+  
+    .blueprint-svg {
+      max-height: 210px !important;
+    }
+  
+    .param-grid {
+      gap: 12px !important;
+      margin-bottom: 14px !important;
+    }
+  
+    .param-item {
+      padding: 8px 12px !important;
+    }
+  
+    .param-tag {
+      font-size: 11.5px !important;
+    }
+  
+    .param-input-box input {
+      font-size: 15.5px !important;
+    }
+  
+    .btn-calculate {
+      padding: 12px !important;
+      font-size: 15px !important;
+      margin-bottom: 14px !important;
+    }
+  
+    .terminal-box {
+      min-height: 120px !important;
+      padding: 12px 14px !important;
+    }
+  
+    .terminal-box pre {
+      font-size: 12.5px !important;
+      line-height: 1.5 !important;
+    }
+  }

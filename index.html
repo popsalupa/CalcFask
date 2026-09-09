@@ -126,19 +126,29 @@
     </a>
 
     <!-- 04. Радиусы (G2/G3) -->
-    <div class="calc-card" data-op="fillet-radius">
-      <span class="card-badge">№ 04</span>
-      <div class="icon-box">
-        <svg viewBox="0 0 100 80">
-          <path d="M 15 25 L 55 25 A 20 20 0 0 1 75 45 L 75 75" fill="none" stroke="var(--detail-color)" stroke-width="2.5" />
-          <circle cx="55" cy="45" r="4" fill="var(--tool-color)" />
-          <line x1="55" y1="45" x2="69" y2="31" stroke="var(--tool-color)" stroke-width="1.5" stroke-dasharray="2,2" />
-        </svg>
-      </div>
-      <h2 class="card-title">Радиусы (G2 / G3)</h2>
-      <p class="card-desc">Круговая интерполяция, сопряжения внешних и внутренних углов с учетом пластины.</p>
-      <div class="card-btn">Открыть модуль →</div>
+  <a href="radHub.html" class="calc-card" data-op="fillet-radius">
+    <span class="card-badge">№ 04</span>
+    <div class="icon-box">
+      <svg viewBox="0 0 100 80">
+        <!-- Осевая штрихпунктирная линия детали -->
+        <line x1="10" y1="50" x2="90" y2="50" stroke="#475569" stroke-width="1.2" stroke-dasharray="6,2,1.5,2" opacity="0.6" />
+        
+        <!-- Контур детали со скруглением угла R -->
+        <path d="M 20 50 L 20 28 L 60 28 A 14 14 0 0 1 74 42 L 74 50" fill="none" stroke="var(--detail-color)" stroke-width="2.4" stroke-linejoin="round" />
+        
+        <!-- Дуга сопряжения -->
+        <path d="M 60 28 A 14 14 0 0 1 74 42" fill="none" stroke="var(--tool-color)" stroke-width="2.6" />
+        
+        <!-- Центр и контрольная точка радиуса -->
+        <circle cx="60" cy="42" r="2" fill="var(--tool-color)" />
+        <line x1="60" y1="42" x2="70" y2="32" stroke="var(--tool-color)" stroke-width="1.3" stroke-dasharray="2,2" />
+        <text x="76" y="30" fill="var(--tool-color)" font-size="9" font-family="monospace" font-weight="bold">R</text>
+      </svg>
     </div>
+    <h2 class="card-title">Радиусы (G2 / G3)</h2>
+    <p class="card-desc">Круговая интерполяция, сопряжения внешних и внутренних углов с учетом пластины.</p>
+    <div class="card-btn">Открыть модуль →</div>
+  </a>
 
     <!-- 05. Токарная резьба -->
     <div class="calc-card" data-op="lathe-thread">

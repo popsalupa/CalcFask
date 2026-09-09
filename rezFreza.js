@@ -234,3 +234,33 @@ document.getElementById('btn-copy').addEventListener('click', () => {
     alert('G-код скопирован в буфер обмена!');
   });
 });
+
+// ты абобус
+(() => {
+  const inputF = document.getElementById('in-f');
+  if (!inputF) return;
+
+  const defaultPlaceholder = 'опция';
+  const easterEggText = 'ты приемный цыганенок';
+
+  function triggerRandomPlaceholder() {
+    const minDelay = 25000;  // 25 сек
+    const maxDelay = 90000; // 1.5 мин
+    const randomDelay = Math.floor(Math.random() * (maxDelay - minDelay + 1)) + minDelay;
+
+    setTimeout(() => {
+      if (document.activeElement !== inputF && !inputF.value.trim()) {
+        inputF.placeholder = easterEggText;
+
+        setTimeout(() => {
+          inputF.placeholder = defaultPlaceholder;
+          triggerRandomPlaceholder();
+        }, 2000);
+      } else {
+        triggerRandomPlaceholder();
+      }
+    }, randomDelay);
+  }
+
+  triggerRandomPlaceholder();
+})();

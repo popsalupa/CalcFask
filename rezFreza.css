@@ -16,12 +16,13 @@ body {
 
 .app-screen {
   width: 100%;
-  max-width: 400px;
+  max-width: 440px;
   background-color: #141c28;
   border: 1px solid #243245;
   border-radius: 14px;
-  padding: 10px 12px;
+  padding: 12px 14px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  transition: max-width 0.25s ease;
 }
 
 /* ================= PRELOADER ================= */
@@ -61,7 +62,6 @@ body {
   overflow: visible;
 }
 
-/* Бегущие линии вращения детали */
 .rotating-stock rect {
   animation: stockSpin 0.35s linear infinite;
 }
@@ -71,7 +71,6 @@ body {
   100% { transform: translateX(-12px); }
 }
 
-/* Пульсация точки контакта кромки с металлом */
 .cutting-glow {
   animation: glowPulse 0.15s alternate infinite ease-in-out;
   filter: drop-shadow(0 0 6px #f43f5e);
@@ -82,7 +81,6 @@ body {
   100% { r: 3.5px; opacity: 1; }
 }
 
-/* Вьющаяся стружка */
 .flying-chip {
   stroke-dasharray: 20;
   stroke-dashoffset: 20;
@@ -99,7 +97,6 @@ body {
   100% { stroke-dashoffset: -20; opacity: 0; transform: scale(1.1) translateY(-8px) translateX(6px); }
 }
 
-/* Искры */
 .spark {
   animation: sparkBurst 0.4s ease-out infinite;
 }
@@ -112,7 +109,6 @@ body {
   100% { transform: translate(-15px, -18px); opacity: 0; }
 }
 
-/* Текстовые подписи */
 .loader-caption {
   display: flex;
   flex-direction: column;
@@ -141,13 +137,13 @@ body {
   50% { opacity: 1; }
 }
 
-/* Навигация */
+/* ================= НАВИГАЦИЯ ================= */
 .top-nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
   height: 32px;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 
 .nav-btn-back {
@@ -168,37 +164,42 @@ body {
   background: transparent;
   border: none;
   color: #38bdf8;
-  font-size: 13.5px;
+  font-size: 13px;
   font-weight: 500;
   cursor: pointer;
 }
 
-/* Чертеж / SVG */
+/* ================= ЧЕРТЕЖ ================= */
 .blueprint-wrapper {
   background: #080d14;
   border: 1px solid #1e2c3f;
-  border-radius: 8px;
-  padding: 6px;
-  margin-bottom: 8px;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 12px;
   display: flex;
   justify-content: center;
+  align-items: center;
+  min-height: 195px;
 }
 
-.blueprint-svg-pro {
+.blueprint-svg-pro,
+.blueprint-svg {
   width: 100%;
-  max-height: 140px;
+  height: auto;
+  max-height: 190px;
+  display: block;
 }
 
-/* Компактный блок селекторов 2x2 */
+/* ================= СЕЛЕКТОРЫ ================= */
 .config-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 6px;
+  gap: 8px;
   background: #090e17;
   border: 1px solid #1e2c3f;
   border-radius: 8px;
-  padding: 6px;
-  margin-bottom: 8px;
+  padding: 8px;
+  margin-bottom: 10px;
 }
 
 .cfg-cell {
@@ -206,8 +207,8 @@ body {
   align-items: center;
   background: #141c28;
   border: 1px solid #28394e;
-  border-radius: 5px;
-  padding: 2px 6px;
+  border-radius: 6px;
+  padding: 3px 8px;
   gap: 6px;
 }
 
@@ -234,96 +235,6 @@ body {
 .cfg-cell select option {
   background-color: #141c28;
   color: #f1f5f9;
-}
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  -webkit-tap-highlight-color: transparent;
-}
-
-body {
-  background-color: #0b0f17;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  color: #f1f5f9;
-  display: flex;
-  justify-content: center;
-  padding: 8px;
-}
-
-.app-screen {
-  width: 100%;
-  max-width: 400px;
-  background-color: #141c28;
-  border: 1px solid #243245;
-  border-radius: 14px;
-  padding: 10px 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
-}
-
-/* ================= PRELOADER ================= */
-.cnc-preloader {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: #0b0f17;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-  opacity: 1;
-  visibility: visible;
-  transition: opacity 0.4s ease, visibility 0.4s ease;
-}
-
-.cnc-preloader.done {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-}
-
-.loader-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  width: 200px;
-}
-
-.lathe-animation {
-  width: 100%;
-  height: auto;
-  overflow: visible;
-}
-
-/* Бегущие линии вращения детали */
-.rotating-stock rect {
-  animation: stockSpin 0.35s linear infinite;
-}
-
-@keyframes stockSpin {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-12px); }
-}
-
-/* Пульсация точки контакта кромки с металлом */
-.cutting-glow {
-  animation: glowPulse 0.15s alternate infinite ease-in-out;
-  filter: drop-shadow(0 0 6px #f43f5e);
-}
-
-@keyframes glowPulse {
-  0% { r: 2px; opacity: 0.7; }
-  100% { r: 3.5px; opacity: 1; }
-}
-
-/* Вьющаяся стружка */
-.flying-chip {
-  stroke-dasharray: 20;
-  stroke-dashoffset: 20;
-  animation: chipFlow 0.6s linear infinite;
 }
 
 .cfg-cell select:disabled {
@@ -332,184 +243,43 @@ body {
   color: #64748b;
 }
 
-.chip-delay {
-  animation-delay: 0.3s;
-}
-
-@keyframes chipFlow {
-  0% { stroke-dashoffset: 20; opacity: 0; transform: scale(0.8) translateY(0); }
-  30% { opacity: 1; }
-  100% { stroke-dashoffset: -20; opacity: 0; transform: scale(1.1) translateY(-8px) translateX(6px); }
-}
-
-/* Искры */
-.spark {
-  animation: sparkBurst 0.4s ease-out infinite;
-}
-.s1 { animation-delay: 0.05s; }
-.s2 { animation-delay: 0.18s; }
-.s3 { animation-delay: 0.28s; }
-
-@keyframes sparkBurst {
-  0% { transform: translate(0, 0); opacity: 1; }
-  100% { transform: translate(-15px, -18px); opacity: 0; }
-}
-
-/* Текстовые подписи */
-.loader-caption {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-}
-
-.loader-title {
-  font-family: monospace;
-  font-size: 13px;
+/* ================= ПАРАМЕТРЫ И ИНПУТЫ ================= */
+.section-title {
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: #94a3b8;
+  margin: 10px 2px 6px 2px;
   font-weight: 700;
-  letter-spacing: 2px;
-  color: #38bdf8;
-  text-transform: uppercase;
 }
 
-.loader-sub {
-  font-family: monospace;
-  font-size: 10px;
-  color: #64748b;
-  animation: textBlink 1s ease-in-out infinite;
-}
-
-@keyframes textBlink {
-  0%, 100% { opacity: 0.4; }
-  50% { opacity: 1; }
-}
-
-/* Навигация */
-.top-nav {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 32px;
-  margin-bottom: 6px;
-}
-
-.nav-btn-back {
-  color: #38bdf8;
-  text-decoration: none;
-  font-size: 24px;
-  padding: 0 4px;
-}
-
-.nav-title {
-  color: #38bdf8;
-  font-size: 15px;
-  font-weight: 600;
-  letter-spacing: -0.2px;
-}
-
-.nav-clean {
-  background: transparent;
-  border: none;
-  color: #38bdf8;
-  font-size: 13.5px;
-  font-weight: 500;
-  cursor: pointer;
-}
-
-/* Чертеж / SVG */
-.blueprint-wrapper {
-  background: #080d14;
-  border: 1px solid #1e2c3f;
-  border-radius: 8px;
-  padding: 6px;
-  margin-bottom: 8px;
-  display: flex;
-  justify-content: center;
-}
-
-.blueprint-svg-pro {
-  width: 100%;
-  max-height: 140px;
-}
-
-/* Компактный блок селекторов 2x2 */
-.config-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 6px;
-  background: #090e17;
-  border: 1px solid #1e2c3f;
-  border-radius: 8px;
-  padding: 6px;
-  margin-bottom: 8px;
-}
-
-.cfg-cell {
-  display: flex;
-  align-items: center;
-  background: #141c28;
-  border: 1px solid #28394e;
-  border-radius: 5px;
-  padding: 2px 6px;
-  gap: 6px;
-}
-
-.cfg-lbl {
-  font-size: 10.5px;
-  color: #64748b;
-  font-family: monospace;
-  white-space: nowrap;
-}
-
-.cfg-cell select {
-  width: 100%;
-  background: transparent;
-  border: none;
-  color: #38bdf8;
-  font-size: 11.5px;
-  font-weight: 500;
-  outline: none;
-  cursor: pointer;
-  padding: 4px 0;
-  text-overflow: ellipsis;
-}
-
-.cfg-cell select option {
-  background-color: #141c28;
-  color: #f1f5f9;
-}
-
-/* Заголовки разделов */
-.section-title {
-  font-size: 10.5px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  color: #64748b;
-  margin: 6px 2px 4px 2px;
-  font-weight: 600;
-}
-
-/* Сетка полей ввода */
 .param-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  column-gap: 8px;
-  row-gap: 6px;
-  margin-bottom: 8px;
+  gap: 8px;
+  margin-bottom: 10px;
 }
 
 .param-item {
+  background: #0d1522;
+  border: 1px solid #1e293b;
+  border-radius: 8px;
+  padding: 6px 8px;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 4px;
+  transition: border-color 0.2s ease;
+}
+
+.param-item:focus-within {
+  border-color: #38bdf8;
 }
 
 .param-tag {
-  font-size: 10px;
+  font-size: 10.5px;
   color: #94a3b8;
   font-family: monospace;
-  white-space: normal; /* Разрешаем перенос строки при необходимости */
-  line-height: 1.2;
+  font-weight: 600;
 }
 
 .tag-row {
@@ -520,68 +290,65 @@ body {
 
 .btn-mini {
   background: #1e2c3f;
-  border: 1px solid #33465e;
+  border: 1px solid #38bdf8;
   color: #38bdf8;
-  font-size: 9.5px;
+  font-size: 9px;
   padding: 1px 5px;
-  border-radius: 3px;
+  border-radius: 4px;
   cursor: pointer;
 }
 
 .btn-mini:hover {
-  background: #263850;
+  background: rgba(56, 189, 248, 0.15);
 }
 
 .param-input-box {
-  background: #080d14;
-  border: 1px solid #243447;
-  border-radius: 5px;
   display: flex;
   align-items: center;
 }
 
-.param-input-box input,
-.param-input-box select {
+.param-input-box input {
   width: 100%;
   background: transparent;
   border: none;
-  padding: 5px 7px;
-  color: #f1f5f9;
+  color: #f8fafc;
   font-family: monospace;
-  font-size: 13px;
+  font-size: 14px;
+  font-weight: 600;
   outline: none;
 }
 
 .param-input-box input::placeholder {
-  color: #3b4d63;
-  font-size: 11px;
+  color: #475569;
+  font-size: 12px;
+  font-weight: 400;
 }
 
 .opt-box {
   border-style: dashed;
 }
 
-/* Кнопка расчета */
+/* ================= КНОПКА И ВЫВОД ================= */
 .btn-calculate {
   width: 100%;
   background: #f43f5e;
   color: #ffffff;
   border: none;
-  border-radius: 7px;
+  border-radius: 8px;
   padding: 10px;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   margin-top: 4px;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
+  transition: background 0.2s ease;
   box-shadow: 0 3px 10px rgba(244, 63, 94, 0.25);
 }
 
-.btn-calculate:active {
-  transform: scale(0.98);
+.btn-calculate:hover {
+  background: #e11d48;
 }
 
-/* Блок вывода кода */
 .output-meta {
   display: flex;
   align-items: center;
@@ -591,159 +358,15 @@ body {
 
 .meta-title {
   font-size: 11px;
-  color: #64748b;
-  font-family: monospace;
-}
-
-.action-link {
-  background: transparent;
-  border: none;
-  color: #38bdf8;
-  font-size: 12px;
-  font-family: monospace;
-  cursor: pointer;
-}
-
-.terminal-box {
-  background: #080d14;
-  border: 1px solid #1e2c3f;
-  border-radius: 7px;
-  padding: 8px;
-  min-height: 120px;
-  max-height: 280px;
-  overflow-y: auto;
-}
-
-pre {
-  margin: 0;
-  font-family: monospace;
-  font-size: 11.5px;
-  color: #38bdf8;
-  line-height: 1.4;
-  white-space: pre-wrap;
-}
-
-/* Заголовки разделов */
-.section-title {
-  font-size: 10.5px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  color: #64748b;
-  margin: 6px 2px 4px 2px;
-  font-weight: 600;
-}
-
-/* Сетка полей ввода */
-.param-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  column-gap: 8px;
-  row-gap: 6px;
-  margin-bottom: 8px;
-}
-
-.param-item {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.param-tag {
-  font-size: 10px;
   color: #94a3b8;
   font-family: monospace;
-  white-space: normal; /* Разрешаем перенос строки при необходимости */
-  line-height: 1.2;
-}
-
-.tag-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.btn-mini {
-  background: #1e2c3f;
-  border: 1px solid #33465e;
-  color: #38bdf8;
-  font-size: 9.5px;
-  padding: 1px 5px;
-  border-radius: 3px;
-  cursor: pointer;
-}
-
-.btn-mini:hover {
-  background: #263850;
-}
-
-.param-input-box {
-  background: #080d14;
-  border: 1px solid #243447;
-  border-radius: 5px;
-  display: flex;
-  align-items: center;
-}
-
-.param-input-box input,
-.param-input-box select {
-  width: 100%;
-  background: transparent;
-  border: none;
-  padding: 5px 7px;
-  color: #f1f5f9;
-  font-family: monospace;
-  font-size: 13px;
-  outline: none;
-}
-
-.param-input-box input::placeholder {
-  color: #3b4d63;
-  font-size: 11px;
-}
-
-.opt-box {
-  border-style: dashed;
-}
-
-/* Кнопка расчета */
-.btn-calculate {
-  width: 100%;
-  background: #f43f5e;
-  color: #ffffff;
-  border: none;
-  border-radius: 7px;
-  padding: 10px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  margin-top: 4px;
-  margin-bottom: 8px;
-  box-shadow: 0 3px 10px rgba(244, 63, 94, 0.25);
-}
-
-.btn-calculate:active {
-  transform: scale(0.98);
-}
-
-/* Блок вывода кода */
-.output-meta {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 4px;
-}
-
-.meta-title {
-  font-size: 11px;
-  color: #64748b;
-  font-family: monospace;
 }
 
 .action-link {
   background: transparent;
   border: none;
   color: #38bdf8;
-  font-size: 12px;
+  font-size: 11.5px;
   font-family: monospace;
   cursor: pointer;
 }
@@ -751,18 +374,97 @@ pre {
 .terminal-box {
   background: #080d14;
   border: 1px solid #1e2c3f;
-  border-radius: 7px;
-  padding: 8px;
-  min-height: 120px;
+  border-radius: 8px;
+  padding: 8px 10px;
+  min-height: 100px;
   max-height: 280px;
   overflow-y: auto;
 }
 
 pre {
   margin: 0;
-  font-family: monospace;
+  font-family: "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
   font-size: 11.5px;
   color: #38bdf8;
-  line-height: 1.4;
+  line-height: 1.45;
   white-space: pre-wrap;
+}
+
+/* ================= АДАПТИВНОСТЬ ДЛЯ ПК ================= */
+@media (min-width: 768px) {
+  body {
+    padding: 24px 16px;
+  }
+
+  .app-screen {
+    max-width: 640px !important;
+    padding: 18px 22px !important;
+    border-radius: 18px !important;
+  }
+
+  .nav-title {
+    font-size: 17px !important;
+  }
+
+  .blueprint-wrapper {
+    min-height: 260px !important;
+    padding: 14px !important;
+    margin-bottom: 14px !important;
+  }
+
+  .blueprint-svg-pro,
+  .blueprint-svg {
+    max-height: 245px !important;
+  }
+
+  .config-grid {
+    gap: 10px !important;
+    padding: 10px !important;
+    margin-bottom: 12px !important;
+  }
+
+  .cfg-cell {
+    padding: 5px 10px !important;
+  }
+
+  .cfg-lbl {
+    font-size: 11.5px !important;
+  }
+
+  .cfg-cell select {
+    font-size: 12.5px !important;
+  }
+
+  .param-grid {
+    gap: 12px !important;
+    margin-bottom: 14px !important;
+  }
+
+  .param-item {
+    padding: 8px 12px !important;
+  }
+
+  .param-tag {
+    font-size: 11.5px !important;
+  }
+
+  .param-input-box input {
+    font-size: 15.5px !important;
+  }
+
+  .btn-calculate {
+    padding: 12px !important;
+    font-size: 15px !important;
+    margin-bottom: 14px !important;
+  }
+
+  .terminal-box {
+    min-height: 130px !important;
+    padding: 12px 14px !important;
+  }
+
+  .terminal-box pre {
+    font-size: 12.5px !important;
+    line-height: 1.5 !important;
+  }
 }

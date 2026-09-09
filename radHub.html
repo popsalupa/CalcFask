@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Радиусы и скругления — Выбор типа</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23141c28'/><polygon points='16,4 28,16 16,28 4,16' fill='%23f59e0b' stroke='%2338bdf8' stroke-width='1.8'/><circle cx='16' cy='16' r='4.5' fill='%230b0f17' stroke='%2338bdf8' stroke-width='1.5'/><circle cx='25' cy='16' r='1.2' fill='%23f43f5e'/></svg>">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="radHub.css">
+</head>
+<body>
+  <div class="app-screen">
+    <header class="top-nav">
+      <a href="index.html" class="nav-btn-back">‹</a>
+      <span class="nav-title">Радиусы и скругления</span>
+      <span></span>
+    </header>
+
+    <!-- РАЗДЕЛ 1: БАЗОВЫЕ ВИДЫ (МЕТОДИЧКА) -->
+    <div class="section-divider">
+      <span class="divider-title">Базовые виды</span>
+      <span class="divider-badge">Виды 1–4</span>
+    </div>
+
+    <div class="types-grid">
+      <!-- 01: Сферический купол -->
+      <a href="radType1.html" class="type-card">
+        <div class="type-preview">
+          <svg viewBox="0 0 110 70" class="mini-svg">
+            <line x1="5" y1="35" x2="105" y2="35" stroke="#475569" stroke-width="1" stroke-dasharray="4,2"/>
+            <path d="M 20 20 L 55 20 A 15 15 0 0 1 70 35 A 15 15 0 0 1 55 50 L 20 50 Z" fill="none" stroke="#38bdf8" stroke-width="2"/>
+            <line x1="70" y1="35" x2="88" y2="18" stroke="#fbbf24" stroke-width="1.2"/>
+            <text x="82" y="15" fill="#fbbf24" font-size="9" font-family="monospace">R</text>
+          </svg>
+        </div>
+        <div class="type-info">
+          <span class="type-num">Вид 01</span>
+          <span class="type-name">Сферический купол (Торец)</span>
+        </div>
+      </a>
+
+      <!-- 02: Наружное скругление угла -->
+      <a href="radType2.html" class="type-card">
+        <div class="type-preview">
+          <svg viewBox="0 0 110 70" class="mini-svg">
+            <line x1="5" y1="48" x2="105" y2="48" stroke="#475569" stroke-width="1" stroke-dasharray="4,2"/>
+            <path d="M 20 48 L 20 20 L 68 20 A 14 14 0 0 1 82 34 L 82 48 Z" fill="none" stroke="#38bdf8" stroke-width="2"/>
+            <path d="M 68 20 A 14 14 0 0 1 82 34" fill="none" stroke="#fbbf24" stroke-width="2.4"/>
+            <text x="76" y="16" fill="#fbbf24" font-size="9" font-family="monospace">R</text>
+          </svg>
+        </div>
+        <div class="type-info">
+          <span class="type-num">Вид 02</span>
+          <span class="type-name">Наружный радиус кромки</span>
+        </div>
+      </a>
+
+      <!-- 03: Внутренняя галтель уступа -->
+      <a href="radType3.html" class="type-card">
+        <div class="type-preview">
+          <svg viewBox="0 0 110 70" class="mini-svg">
+            <line x1="5" y1="48" x2="105" y2="48" stroke="#475569" stroke-width="1" stroke-dasharray="4,2"/>
+            <path d="M 20 15 L 45 15 L 45 30 A 12 12 0 0 0 57 42 L 85 42 L 85 48 L 20 48 Z" fill="none" stroke="#38bdf8" stroke-width="2"/>
+            <path d="M 45 30 A 12 12 0 0 0 57 42" fill="none" stroke="#fbbf24" stroke-width="2.4"/>
+            <text x="56" y="30" fill="#fbbf24" font-size="9" font-family="monospace">R</text>
+          </svg>
+        </div>
+        <div class="type-info">
+          <span class="type-num">Вид 03</span>
+          <span class="type-name">Внутренняя галтель уступа</span>
+        </div>
+      </a>
+
+      <!-- 04: Зарез под отрезку / головка винта -->
+      <a href="radType4.html" class="type-card">
+        <div class="type-preview">
+          <svg viewBox="0 0 110 70" class="mini-svg">
+            <line x1="5" y1="35" x2="105" y2="35" stroke="#475569" stroke-width="1" stroke-dasharray="4,2"/>
+            <path d="M 42 20 L 55 20 L 55 29 L 85 29 L 85 41 L 55 41 L 55 50 L 42 50 A 20 20 0 0 1 42 20 Z" fill="none" stroke="#38bdf8" stroke-width="2"/>
+            <text x="24" y="38" fill="#fbbf24" font-size="9" font-family="monospace">R</text>
+          </svg>
+        </div>
+        <div class="type-info">
+          <span class="type-num">Вид 04</span>
+          <span class="type-name">Головка винта (Отрезка)</span>
+        </div>
+      </a>
+    </div>
+
+    <!-- РАЗДЕЛ 2: ИНЖЕНЕРНЫЕ СОПРЯЖЕНИЯ (ИЗ ПРИЛОЖЕНИЯ) -->
+    <div class="section-divider sec-adv">
+      <span class="divider-title">Контурные сопряжения</span>
+      <span class="divider-badge badge-adv">PRO Калькулятор</span>
+    </div>
+
+    <div class="types-grid">
+      <!-- 05: «Чупа-чупс» (Сфера SR1 + галтель R2) -->
+      <a href="radTypeChupa.html" class="type-card card-adv">
+        <div class="type-preview">
+          <svg viewBox="0 0 110 70" class="mini-svg">
+            <line x1="5" y1="35" x2="105" y2="35" stroke="#475569" stroke-width="1" stroke-dasharray="4,2"/>
+            <!-- Ножка D1 -->
+            <path d="M 15 25 L 36 25" stroke="#38bdf8" stroke-width="2"/>
+            <path d="M 15 45 L 36 45" stroke="#38bdf8" stroke-width="2"/>
+            <!-- Галтель сопряжения R2 -->
+            <path d="M 36 25 A 6 6 0 0 0 42 20" fill="none" stroke="#f43f5e" stroke-width="2.2"/>
+            <path d="M 36 45 A 6 6 0 0 1 42 50" fill="none" stroke="#f43f5e" stroke-width="2.2"/>
+            <!-- Сферическая голова SR1 -->
+            <path d="M 42 20 A 22 22 0 1 1 42 50" fill="none" stroke="#fbbf24" stroke-width="2.2"/>
+            <!-- Точки A, B, C, D -->
+            <circle cx="83" cy="35" r="2" fill="#fbbf24"/>
+            <text x="86" y="33" fill="#fbbf24" font-size="7" font-family="monospace">A</text>
+            <text x="24" y="16" fill="#f43f5e" font-size="7" font-family="monospace">R2</text>
+            <text x="56" y="14" fill="#fbbf24" font-size="7" font-family="monospace">SR1</text>
+          </svg>
+        </div>
+        <div class="type-info">
+          <span class="type-num">Контур 01</span>
+          <span class="type-name">«Чупа-чупс» (Сфера SR1 + R2)</span>
+        </div>
+      </a>
+
+      <!-- 06: Type 2 (Конус Angle1 + R1 + R2) -->
+      <a href="radTypeCone.html" class="type-card card-adv">
+        <div class="type-preview">
+          <svg viewBox="0 0 110 70" class="mini-svg">
+            <line x1="5" y1="48" x2="105" y2="48" stroke="#475569" stroke-width="1" stroke-dasharray="4,2"/>
+            <!-- Цилиндр D1, дуга R2, конус, дуга R1, цилиндр d2 -->
+            <path d="M 15 20 L 32 20 A 8 8 0 0 1 39 23 L 62 38 A 8 8 0 0 0 69 41 L 90 41 L 90 48 L 15 48 Z" fill="none" stroke="#38bdf8" stroke-width="2"/>
+            <circle cx="39" cy="23" r="2" fill="#fbbf24"/>
+            <circle cx="62" cy="38" r="2" fill="#fbbf24"/>
+            <text x="28" y="16" fill="#fbbf24" font-size="7.5" font-family="monospace">R2</text>
+            <text x="70" y="35" fill="#fbbf24" font-size="7.5" font-family="monospace">R1</text>
+          </svg>
+        </div>
+        <div class="type-info">
+          <span class="type-num">Контур 02</span>
+          <span class="type-name">Конус с сопряжениями R1/R2</span>
+        </div>
+      </a>
+
+      <!-- 07: Type 12 (Дуговой торец d2 -> D1) -->
+      <a href="radTypeFaceArc.html" class="type-card card-adv span-two">
+        <div class="type-preview">
+          <svg viewBox="0 0 160 65" class="mini-svg">
+            <line x1="10" y1="35" x2="150" y2="35" stroke="#475569" stroke-width="1" stroke-dasharray="4,2"/>
+            <!-- Деталь D1, сфера R1, торец d2 -->
+            <path d="M 25 15 L 75 15 A 26 26 0 0 1 112 26 L 112 44 A 26 26 0 0 1 75 55 L 25 55 Z" fill="none" stroke="#38bdf8" stroke-width="2"/>
+            <line x1="112" y1="26" x2="112" y2="44" stroke="#f43f5e" stroke-width="2.2"/>
+            <circle cx="112" cy="26" r="2" fill="#fbbf24"/>
+            <circle cx="75" cy="15" r="2" fill="#fbbf24"/>
+            <text x="117" y="38" fill="#f43f5e" font-size="8.5" font-family="monospace">d2</text>
+            <text x="92" y="16" fill="#fbbf24" font-size="8.5" font-family="monospace">R1</text>
+          </svg>
+        </div>
+        <div class="type-info">
+          <span class="type-num">Контур 03</span>
+          <span class="type-name">Торец с радиусом сопряжения (Type 12)</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</body>
+</html>

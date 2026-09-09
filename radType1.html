@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Вид 01 — Сферический купол</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23141c28'/><polygon points='16,4 28,16 16,28 4,16' fill='%23f59e0b' stroke='%2338bdf8' stroke-width='1.8'/><circle cx='16' cy='16' r='4.5' fill='%230b0f17' stroke='%2338bdf8' stroke-width='1.5'/><circle cx='25' cy='16' r='1.2' fill='%23f43f5e'/></svg>">
+  <link rel="stylesheet" href="radType.css">
+</head>
+<body>
+  <div class="app-screen">
+    <header class="top-nav">
+      <a href="radHub.html" class="nav-btn-back">‹</a>
+      <span class="nav-title">Вид 01: Сферический купол</span>
+      <button id="btn-clean" class="nav-clean">Clean</button>
+    </header>
+
+    <!-- Адаптивное окно чертежа детали -->
+    <div class="blueprint-wrapper" id="blueprint-box"></div>
+
+    <!-- Верхний блок чекбокса кромки B со свитчем [G1 | G2/3] -->
+    <div class="edge-top-container">
+      <div class="edge-top-row">
+        <label class="check-inline">
+          <input type="checkbox" id="chk-b">
+          <span style="font-weight:600;">Кромка B (выход)</span>
+        </label>
+
+        <!-- Появляется только при активном чекбоксе -->
+        <div class="edge-fields" id="edge-fields" style="display: none;">
+          <div class="edge-switch">
+            <button type="button" class="switch-btn active" id="btn-sw-g1" data-val="chamfer">G1</button>
+            <button type="button" class="switch-btn" id="btn-sw-g2" data-val="radius">G2/3</button>
+          </div>
+          <div class="edge-input-box">
+            <input type="text" inputmode="decimal" id="in-b-val" value="0.2">
+          </div>
+        </div>
+      </div>
+      <div class="hint-red">Отметьте чекбокс, если требуется фаска или скругление на кромке B</div>
+    </div>
+
+    <!-- Монолитная сетка параметров 2x2 -->
+    <div class="param-grid">
+      <!-- 1. D детали -->
+      <div class="param-item">
+        <span class="param-tag">D детали</span>
+        <div class="param-input-box">
+          <input type="text" inputmode="decimal" id="in-d" placeholder="напр. 6.0">
+        </div>
+      </div>
+
+      <!-- 2. R сферы (с калькулятором) -->
+      <div class="param-item">
+        <span class="param-tag">R сферы</span>
+        <div class="param-input-box">
+          <input type="text" inputmode="decimal" id="in-r" placeholder="напр. 5.0">
+          <button type="button" class="btn-calc-mini" id="btn-calc-r" title="Рассчитать R через L и D">
+            <svg viewBox="0 0 24 24" class="ico-calc" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="4" y="2" width="16" height="20" rx="3"></rect>
+              <line x1="8" y1="6" x2="16" y2="6"></line>
+              <line x1="16" y1="14" x2="16" y2="18"></line>
+              <path d="M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M8 18h.01M12 18h.01"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- 3. L купола (с калькулятором) -->
+      <div class="param-item">
+        <span class="param-tag">L купола</span>
+        <div class="param-input-box">
+          <input type="text" inputmode="decimal" id="in-l" placeholder="напр. 1.0">
+          <button type="button" class="btn-calc-mini" id="btn-calc-l" title="Рассчитать L через R и D">
+            <svg viewBox="0 0 24 24" class="ico-calc" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="4" y="2" width="16" height="20" rx="3"></rect>
+              <line x1="8" y1="6" x2="16" y2="6"></line>
+              <line x1="16" y1="14" x2="16" y2="18"></line>
+              <path d="M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M8 18h.01M12 18h.01"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- 4. Радиус пластины r (T3) — чистое поле без чекбокса -->
+      <div class="param-item">
+        <span class="param-tag">Пластина r (T3)</span>
+        <div class="param-input-box">
+          <input type="text" inputmode="decimal" id="in-tool-r" placeholder="опция (напр. 0.4)">
+        </div>
+      </div>
+    </div>
+
+    <!-- Переключатель режимов Program / Point -->
+    <div class="mode-toggle">
+      <button class="mode-btn active" id="btn-mode-prog">Программа (Program)</button>
+      <button class="mode-btn" id="btn-mode-point">Точки (Point)</button>
+    </div>
+
+    <button class="btn-calculate" id="btn-calc">Рассчитать G-код</button>
+
+    <div class="output-meta">
+      <span class="meta-title" id="out-title">G-код Fanuc (G02)</span>
+      <button class="action-link" id="btn-copy">📋 copy</button>
+    </div>
+
+    <div class="terminal-box">
+      <pre id="output-box"><code>Нажмите «Рассчитать G-код»...</code></pre>
+    </div>
+  </div>
+
+  <script src="radType1.js"></script>
+</body>
+</html>
