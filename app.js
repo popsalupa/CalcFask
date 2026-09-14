@@ -58,6 +58,14 @@ const modalTitle = document.getElementById('modal-title');
 const modalDesc = document.getElementById('modal-desc');
 const modalCloseBtn = document.getElementById('modal-close-btn');
 
+// Карта готовых страниц калькуляторов
+const moduleRoutes = {
+  'front-chamfer': 'frFasc.html',
+  'back-chamfer': 'bkFasc.html',      // Задняя фаска
+  'fillet-radius': 'radHub.html',     // Хаб радиусов и скруглений
+  'thread-milling': 'rezFreza.html'   // Резьбофреза Swiss PRO
+};
+
 function openOperation(id) {
   const op = operationsData[id];
   if (!op) return;
@@ -74,10 +82,15 @@ function closeModal() {
 document.querySelectorAll('.calc-card').forEach(card => {
   card.addEventListener('click', () => {
     const opId = card.getAttribute('data-op');
-    if (opId === 'front-chamfer') {
-      window.location.href = 'frFasc.html';
+    
+    // Если у карточки нет data-op (это прямая ссылка вроде 01, 02, 03, 04) — ничего не перехватываем
+    if (!opId) return;
+
+    if (moduleRoutes[opId]) {
+      window.location.href = moduleRoutes[opId];
       return;
     }
+
     openOperation(opId);
   });
 });
