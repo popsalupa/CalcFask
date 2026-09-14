@@ -402,6 +402,84 @@
     line-height: 1.45;
   }
 
+/* Кнопка-счёты внутри полей ввода */
+.btn-calc-sub {
+  background: transparent !important;
+  border: none !important;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 0 2px 0 6px !important;
+  line-height: 1;
+  opacity: 0.85;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.btn-calc-sub:hover {
+  opacity: 1;
+  transform: scale(1.15);
+}
+
+/* Блок верхних опций (R2 и пластина r в одну строку) */
+.options-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.option-item {
+  background: #0d1522;
+  border: 1px solid #1e293b;
+  border-radius: 8px;
+  padding: 8px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 42px;
+  transition: border-color 0.2s ease;
+}
+
+.option-item:focus-within {
+  border-color: #38bdf8;
+}
+
+.check-inline {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-size: 11.5px;
+  color: #cbd5e1;
+  user-select: none;
+}
+
+.check-inline input[type="checkbox"] {
+  accent-color: #f43f5e;
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+}
+
+.edge-input-box {
+  width: 55px;
+  background: #080d14;
+  border: 1px solid #243245;
+  border-radius: 6px;
+  padding: 2px 4px;
+}
+
+.edge-input-box input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: #f8fafc;
+  font-size: 13.5px;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  outline: none;
+  text-align: center;
+}
+
   /* Адаптивность для ПК и планшетов во всех калькуляторах */
 @media (min-width: 768px) {
     body {
