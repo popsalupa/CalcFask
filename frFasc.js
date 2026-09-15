@@ -1,5 +1,21 @@
 let currentMode = 'program';
 let modes = { r1: 'arc', r2: 'arc' };
+let lastCalculatedParam = null;
+
+// Универсальная смена знака ± для мобильных устройств
+function toggleSign(inputId) {
+  const input = document.getElementById(inputId);
+  if (!input) return;
+  let val = input.value.trim();
+  if (val.startsWith('-')) {
+    input.value = val.substring(1);
+  } else if (val !== '') {
+    input.value = '-' + val;
+  } else {
+    input.value = '-';
+  }
+  input.dispatchEvent(new Event('input'));
+}
 
 // Автозамена запятой на точку
 document.querySelectorAll('input[type="text"]').forEach(input => {
@@ -7,6 +23,22 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
     e.target.value = e.target.value.replace(',', '.');
   });
 });
+
+// Безопасный вывод текста в терминал
+function setTerminalOutput(text) {
+  const box = document.getElementById('output-box');
+  if (!box) return;
+  const codeEl = box.querySelector('code') || box;
+  codeEl.textContent = text;
+}
+
+// Безопасное получение числа из инпута
+function getNum(id, altId = null) {
+  const el = document.getElementById(id) || (altId ? document.getElementById(altId) : null);
+  if (!el) return NaN;
+  const v = el.value.trim();
+  return v !== '' ? parseFloat(v) : NaN;
+}
 
 const chkR1 = document.getElementById('chk-r1');
 const switchR1 = document.getElementById('switch-r1');
@@ -22,63 +54,77 @@ const contourSimple = document.getElementById('contour-simple');
 const contourMicro = document.getElementById('contour-micro');
 
 function syncBlueprint() {
-  const isMicro = chkR1.checked || chkR2.checked;
-  contourSimple.style.display = isMicro ? 'none' : 'inline';
-  contourMicro.style.display = isMicro ? 'inline' : 'none';
-  if (lblR1Svg) lblR1Svg.style.display = chkR1.checked ? 'inline' : 'none';
-  if (lblR2Svg) lblR2Svg.style.display = chkR2.checked ? 'inline' : 'none';
+  const isMicro = (chkR1 && chkR1.checked) || (chkR2 && chkR2.checked);
+  if (contourSimple) contourSimple.style.display = isMicro ? 'none' : 'inline';
+  if (contourMicro) contourMicro.style.display = isMicro ? 'inline' : 'none';
+  if (lblR1Svg) lblR1Svg.style.display = (chkR1 && chkR1.checked) ? 'inline' : 'none';
+  if (lblR2Svg) lblR2Svg.style.display = (chkR2 && chkR2.checked) ? 'inline' : 'none';
 }
 
-chkR1.addEventListener('change', () => {
-  const active = chkR1.checked;
-  switchR1.style.display = active ? 'flex' : 'none';
-  valR1.style.display = active ? 'block' : 'none';
-  if (!active) valR1.value = '';
-  syncBlueprint();
-});
+if (chkR1) {
+  chkR1.addEventListener('change', () => {
+    const active = chkR1.checked;
+    if (switchR1) switchR1.style.display = active ? 'flex' : 'none';
+    if (valR1) {
+      valR1.style.display = active ? 'block' : 'none';
+      if (!active) valR1.value = '';
+    }
+    syncBlueprint();
+  });
+}
 
-chkR2.addEventListener('change', () => {
-  const active = chkR2.checked;
-  switchR2.style.display = active ? 'flex' : 'none';
-  valR2.style.display = active ? 'block' : 'none';
-  if (!active) valR2.value = '';
-  syncBlueprint();
-});
+if (chkR2) {
+  chkR2.addEventListener('change', () => {
+    const active = chkR2.checked;
+    if (switchR2) switchR2.style.display = active ? 'flex' : 'none';
+    if (valR2) {
+      valR2.style.display = active ? 'block' : 'none';
+      if (!active) valR2.value = '';
+    }
+    syncBlueprint();
+  });
+}
 
 function toggleMicroMode(target, m) {
   modes[target] = m;
-  document.getElementById(`btn-${target}-g1`).classList.toggle('active', m === 'g1');
-  document.getElementById(`btn-${target}-arc`).classList.toggle('active', m === 'arc');
+  const btnG1 = document.getElementById(`btn-${target}-g1`);
+  const btnArc = document.getElementById(`btn-${target}-arc`);
+  if (btnG1) btnG1.classList.toggle('active', m === 'g1');
+  if (btnArc) btnArc.classList.toggle('active', m === 'arc');
 }
 
 // Кнопка Clean
-document.getElementById('btn-clean').addEventListener('click', () => {
-  document.getElementById('in-d1').value = '';
-  document.getElementById('in-d2').value = '';
-  document.getElementById('in-angle').value = '';
-  document.getElementById('in-l1').value = '';
-  document.getElementById('in-start-z').value = '0';
-  document.getElementById('in-radius-r').value = '';
+const btnClean = document.getElementById('btn-clean');
+if (btnClean) {
+  btnClean.addEventListener('click', () => {
+    ['in-d1', 'in-d2', 'in-angle', 'in-l1', 'in-radius-r', 'val-r1', 'val-r2'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.value = '';
+    });
 
-  chkR1.checked = false;
-  chkR2.checked = false;
-  switchR1.style.display = 'none';
-  switchR2.style.display = 'none';
-  valR1.style.display = 'none';
-  valR2.style.display = 'none';
-  valR1.value = '';
-  valR2.value = '';
+    const startZ = document.getElementById('in-start-z') || document.getElementById('in-z0');
+    if (startZ) startZ.value = '0';
 
-  syncBlueprint();
-  document.getElementById('output-box').querySelector('code').textContent = '';
-});
+    lastCalculatedParam = null;
 
-// Авторасчет 3 из 4 параметров
+    if (chkR1) chkR1.checked = false;
+    if (chkR2) chkR2.checked = false;
+    if (switchR1) switchR1.style.display = 'none';
+    if (switchR2) switchR2.style.display = 'none';
+    if (valR1) valR1.style.display = 'none';
+    if (valR2) valR2.style.display = 'none';
+
+    syncBlueprint();
+    setTerminalOutput('; Очищено');
+  });
+}
+
+// Расчет 3 из 4 параметров геометрии (поддерживает оба имени: calcParam и calculateMissingParam)
 function calculateMissingParam(target) {
-  let d1 = parseFloat(document.getElementById('in-d1').value);
-  let d2 = parseFloat(document.getElementById('in-d2').value);
-  let a = parseFloat(document.getElementById('in-angle').value);
-  let l1 = parseFloat(document.getElementById('in-l1').value);
+  let d1 = getNum('in-d1');
+  let d2 = getNum('in-d2');
+  let a = getNum('in-angle');
+  let l1 = getNum('in-l1');
 
   const rad = deg => (deg * Math.PI) / 180;
   const deg = r => (r * 180) / Math.PI;
@@ -86,58 +132,80 @@ function calculateMissingParam(target) {
   if (target === 'D1') {
     if (!isNaN(d2) && !isNaN(a) && !isNaN(l1)) {
       document.getElementById('in-d1').value = (d2 + 2 * l1 * Math.tan(rad(a))).toFixed(3);
+      lastCalculatedParam = 'D1';
     }
   } else if (target === 'd2') {
     if (!isNaN(d1) && !isNaN(a) && !isNaN(l1)) {
       document.getElementById('in-d2').value = (d1 - 2 * l1 * Math.tan(rad(a))).toFixed(3);
+      lastCalculatedParam = 'd2';
     }
   } else if (target === 'angle') {
     if (!isNaN(d1) && !isNaN(d2) && !isNaN(l1) && l1 > 0) {
       document.getElementById('in-angle').value = deg(Math.atan((d1 - d2) / (2 * l1))).toFixed(2);
+      lastCalculatedParam = 'angle';
     }
-  } else if (target === 'L1') {
+  } else if (target === 'L1' || target === 'l1') {
     if (!isNaN(d1) && !isNaN(d2) && !isNaN(a) && a > 0) {
       document.getElementById('in-l1').value = ((d1 - d2) / (2 * Math.tan(rad(a)))).toFixed(3);
+      lastCalculatedParam = 'L1';
     }
   }
 }
+const calcParam = calculateMissingParam; // Алиас для совместимости с HTML
 
-// Точный математический расчет по эталонным формулам ЧПУ
+// Точный расчет и вывод УП
 function performCalculation() {
-  const d1 = parseFloat(document.getElementById('in-d1').value);
-  const d2 = parseFloat(document.getElementById('in-d2').value);
-  const a = parseFloat(document.getElementById('in-angle').value);
-  const l1 = parseFloat(document.getElementById('in-l1').value);
-  const startZ = parseFloat(document.getElementById('in-start-z').value) || 0;
+  let d1 = getNum('in-d1');
+  let d2 = getNum('in-d2');
+  let a = getNum('in-angle');
+  let l1 = getNum('in-l1');
 
-  const rawR = document.getElementById('in-radius-r').value.trim();
-  const hasR = rawR !== '';
-  const rTool = hasR ? (parseFloat(rawR) || 0) : 0;
+  // Автоматический расчет, если заполнены 3 из 4 параметров
+  if (isNaN(d1) && !isNaN(d2) && !isNaN(a) && !isNaN(l1)) {
+    calculateMissingParam('D1');
+  } else if (!isNaN(d1) && isNaN(d2) && !isNaN(a) && !isNaN(l1)) {
+    calculateMissingParam('d2');
+  } else if (!isNaN(d1) && !isNaN(d2) && isNaN(a) && !isNaN(l1)) {
+    calculateMissingParam('angle');
+  } else if (!isNaN(d1) && !isNaN(d2) && !isNaN(a) && isNaN(l1)) {
+    calculateMissingParam('L1');
+  } else if (lastCalculatedParam) {
+    // Если все 4 заполнены, но меняли исходные числа — пересчитываем зависимый параметр
+    calculateMissingParam(lastCalculatedParam);
+  }
+
+  // Обновляем значения после авторасчета
+  d1 = getNum('in-d1');
+  d2 = getNum('in-d2');
+  a = getNum('in-angle');
+  l1 = getNum('in-l1');
 
   if (isNaN(d1) || isNaN(d2) || isNaN(a) || isNaN(l1)) {
+    setTerminalOutput('; Заполните минимум 3 параметра из 4');
     return;
   }
 
-  const isRel = document.getElementById('radio-rel').checked;
+  const rawStartZ = getNum('in-start-z', 'in-z0');
+  const startZ = !isNaN(rawStartZ) ? rawStartZ : 0;
+
+  const rawR = getNum('in-radius-r', 'in-cr');
+  const hasR = !isNaN(rawR) && rawR > 0;
+  const rTool = hasR ? rawR : 0;
+
+  const relEl = document.getElementById('radio-rel');
+  const isRel = relEl ? relEl.checked : false;
+
   const radA = (a * Math.PI) / 180;
 
-  const r1Active = chkR1.checked && parseFloat(valR1.value) > 0;
-  const r1Val = r1Active ? parseFloat(valR1.value) : 0;
+  const r1Active = chkR1 && chkR1.checked && getNum('val-r1') > 0;
+  const r1Val = r1Active ? getNum('val-r1') : 0;
 
-  const r2Active = chkR2.checked && parseFloat(valR2.value) > 0;
-  const r2Val = r2Active ? parseFloat(valR2.value) : 0;
+  const r2Active = chkR2 && chkR2.checked && getNum('val-r2') > 0;
+  const r2Val = r2Active ? getNum('val-r2') : 0;
 
-  const outCode = document.getElementById('output-box').querySelector('code');
-
-  // Угол отклонения на торце: (90 - a)
-  // Половинный угол: (90 - a) / 2
   const halfAngleFace = ((90 - a) / 2 * Math.PI) / 180;
-  // Длина тангенса на торце
   const T_face = r1Val * Math.tan(halfAngleFace);
 
-  // Центр окружности R1 на торце детали:
-  // Z_c = startZ - r1Val
-  // X_c (радиус) = d2 / 2 - T_face
   const X_c1 = d2 / 2 - T_face;
   const Z_c1 = startZ - r1Val;
 
@@ -151,7 +219,6 @@ function performCalculation() {
       startX = d2;
     }
   } else {
-    // При наличии R1: касание идет по плоскому торцу Z=startZ
     if (hasR && rTool > 0) {
       startX = 2 * (X_c1 - rTool);
     } else {
@@ -166,12 +233,6 @@ function performCalculation() {
 
   if (r1Active) {
     if (hasR && rTool > 0) {
-      // Траектория центра инструмента:
-      // X_center = X_c1 + (r1Val + rTool) * cos(a)
-      // Z_center = Z_c1 + (r1Val + rTool) * sin(a)
-      // Виртуальная вершина резца для T3:
-      // X_tip = 2 * (X_center - rTool)
-      // Z_tip = Z_center - rTool
       const X_center = X_c1 + arc1_R * Math.cos(radA);
       const Z_center = Z_c1 + arc1_R * Math.sin(radA);
       arc1_endX = 2 * (X_center - rTool);
@@ -182,11 +243,8 @@ function performCalculation() {
     }
   }
 
-  // 3. Выход на цилиндр D1 (Point C и D)
-  // Угол отклонения между конусом и цилиндром равен a
+  // 3. Выход на цилиндр D1 (Point C)
   const halfAngleCyl = ((a / 2) * Math.PI) / 180;
-  const T_cyl = r2Val * Math.tan(halfAngleCyl);
-
   let endChamferX = d1;
   let endChamferZ = 0;
 
@@ -199,10 +257,6 @@ function performCalculation() {
     }
     endChamferX = d1;
   } else {
-    // При наличии R2 на выходе:
-    // Центр окружности R2:
-    // X_c2 = d1 / 2 - r2Val
-    // Z_c2 = startZ - l1 - T_cyl / tan(a) + r2Val / tan(a) = startZ - l1 - r2Val * tan(halfAngleCyl)
     const X_c2 = d1 / 2 - r2Val;
     const Z_c2 = startZ - l1 - r2Val * Math.tan(halfAngleCyl);
     const arc2_R = r2Val + (hasR ? rTool : 0);
@@ -219,11 +273,11 @@ function performCalculation() {
   }
 
   if (currentMode === 'point') {
-    outCode.textContent = 
+    setTerminalOutput(
 `Point A: X${startX.toFixed(3)} Z${startZ.toFixed(3)}
 Point B: ${r1Active ? `X${arc1_endX.toFixed(3)} Z${arc1_endZ.toFixed(3)}` : '-'}
 Point C: X${endChamferX.toFixed(3)} Z${endChamferZ.toFixed(3)}
-Tool R : ${hasR ? rTool.toFixed(3) : 'None'}`;
+Tool R : ${hasR ? rTool.toFixed(3) : 'None'}`);
     return;
   }
 
@@ -259,7 +313,7 @@ Tool R : ${hasR ? rTool.toFixed(3) : 'None'}`;
     lines.push(`G01 U${formatVal(endChamferX - startX)} W-${formatVal(Math.abs(endChamferZ - startZ))}`);
   }
 
-  outCode.textContent = lines.join('\n');
+  setTerminalOutput(lines.join('\n'));
 }
 
 function formatVal(v) {
@@ -268,31 +322,41 @@ function formatVal(v) {
 
 function setViewMode(m) {
   currentMode = m;
-  document.getElementById('tab-point').classList.toggle('active', m === 'point');
-  document.getElementById('tab-program').classList.toggle('active', m === 'program');
+  const tabPoint = document.getElementById('tab-point');
+  const tabProg = document.getElementById('tab-program');
+  if (tabPoint) tabPoint.classList.toggle('active', m === 'point');
+  if (tabProg) tabProg.classList.toggle('active', m === 'program');
   performCalculation();
 }
 
+// Слушатель на кнопку «Рассчитать»
+const btnCalc = document.getElementById('btn-calculation') || document.getElementById('btn-calc') || document.querySelector('.btn-calculate');
+if (btnCalc) {
+  btnCalc.addEventListener('click', performCalculation);
+}
+
 function copyProgram() {
-  const t = document.getElementById('output-box').querySelector('code').textContent;
-  if (!t) return;
-  navigator.clipboard.writeText(t).then(() => alert('G-код скопирован!'));
+  const box = document.getElementById('output-box');
+  const text = box ? box.textContent.trim() : '';
+  if (!text || text.startsWith(';')) return;
+  navigator.clipboard.writeText(text).then(() => alert('G-код скопирован!'));
 }
 
 function exportFile() {
-  const t = document.getElementById('output-box').querySelector('code').textContent;
-  if (!t) return;
-  const b = new Blob([t], { type: 'text/plain;charset=utf-8' });
+  const box = document.getElementById('output-box');
+  const text = box ? box.textContent.trim() : '';
+  if (!text) return;
+  const b = new Blob([text], { type: 'text/plain;charset=utf-8' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(b);
   a.download = 'Type1_chamfer.nc';
   a.click();
 }
-// Плавное скрытие прелоадера после загрузки страницы
+
+// Скрытие прелоадера
 window.addEventListener('load', () => {
   const preloader = document.getElementById('preloader');
   if (preloader) {
-    // Небольшая задержка 350мс, чтобы глаз успел насладиться анимацией пластины
     setTimeout(() => {
       preloader.classList.add('done');
     }, 350);

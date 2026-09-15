@@ -197,9 +197,10 @@
     <div class="red-hint text-center">Необходимо 3 параметра измерения</div>
 
     <div class="setting-line">
-      <span class="setting-label">Начальная точка по оси Z</span>
-      <div class="setting-input-wrap">
-        <input type="text" inputmode="decimal" id="in-start-z" value="0">
+      <span class="setting-label">Точка старта по Z (Z0)</span>
+      <div class="setting-input-wrap" style="display: flex; align-items: center;">
+        <input type="text" inputmode="decimal" id="in-z0" value="0.0">
+        <button type="button" class="btn-sign" onclick="toggleSign('in-z0')">±</button>
       </div>
     </div>
 

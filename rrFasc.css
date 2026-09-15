@@ -608,3 +608,24 @@
     line-height: 1.5 !important;
   }
 }
+
+/* Кнопка смены знака ± для мобильных */
+.btn-sign {
+  background: transparent;
+  border: none;
+  border-left: 1px solid #233142;
+  color: #38bdf8;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 0 8px;
+  cursor: pointer;
+  line-height: 1;
+  transition: all 0.15s ease;
+}
+
+.btn-sign:hover,
+.btn-sign:active {
+  color: #f43f5e;
+  background: rgba(244, 63, 94, 0.15);
+}

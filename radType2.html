@@ -46,7 +46,7 @@
         <path id="part-arc-main" d="M 215 35 A 35 35 0 0 1 250 70" fill="none" stroke="#fbbf24" stroke-width="2.8" />
         <path id="part-arc-micro" d="" fill="none" stroke="#f43f5e" stroke-width="2.8" style="display: none;" />
 
-        <!-- Точки C, B, A -->
+        <!-- Опорные точки: C (на цилиндре), B (сопряжение), A (на торце) -->
         <g id="group-pts">
           <circle id="pt-c" cx="215" cy="35" r="2.5" fill="#fbbf24" />
           <text id="lbl-c" x="210" y="26" fill="#fbbf24" font-size="11" font-family="monospace" font-weight="700">B</text>
@@ -85,7 +85,7 @@
       </svg>
     </div>
 
-    <!-- Верхние опции: пластина r (T3) слева, R2 (торец) справа -->
+    <!-- Опции: пластина r (T3) слева, R2 (торец) справа -->
     <div class="options-row">
       <div class="option-item">
         <label class="check-inline">
@@ -144,6 +144,17 @@
     </div>
 
     <div class="hint-red" style="text-align: center; margin-bottom: 8px;">Заполните любые 3 параметра из 4 (4-й рассчитывается кнопкой 🧮)</div>
+
+    <!-- Компактное поле торца Z0 по центру -->
+    <div class="param-center-row">
+      <div class="param-item param-item-mini">
+        <span class="param-tag">Торец детали Z0 (мм)</span>
+        <div class="param-input-box">
+          <input type="text" inputmode="decimal" id="in-z0" value="0.0">
+          <button type="button" class="btn-sign" onclick="toggleSign('in-z0')">±</button>
+        </div>
+      </div>
+    </div>
 
     <!-- Переключатель Программа / Точки -->
     <div class="mode-toggle">

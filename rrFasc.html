@@ -223,8 +223,9 @@
     <!-- Дополнительные параметры: L детали, W пластины, БП -->
     <div class="setting-line">
       <span class="setting-label">Длина детали L (мм)</span>
-      <div class="setting-input-wrap">
+      <div class="setting-input-wrap" style="display: flex; align-items: center;">
         <input type="text" inputmode="decimal" id="in-len-l" placeholder="">
+        <button type="button" class="btn-sign" onclick="toggleSign('in-len-l')">±</button>
       </div>
     </div>
 
